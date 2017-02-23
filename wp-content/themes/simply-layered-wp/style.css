@@ -1,0 +1,24 @@
+/*
+Theme Name: Simply Layered
+Theme URI: http://www.rmlsoft.com/projects/layered-bliss/
+Author: Robert M Lester Jr
+Author URI: http://www.rmlsoft.com
+Description: A very simple and fully responsive wordpress site. We thought of just about everything.
+Version: 1.1
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Tags: black, white, light, dark, two-columns, right-sidebar, responsive-layout, custom-background, custom-header, custom-menu, editor-style, featured-images, flexible-header, full-width-template, microformats, post-formats, rtl-language-support, sticky-post, theme-options, translation-ready, accessibility-ready
+Text Domain: lb-theme
+
+This theme, like WordPress, is licensed under the GPL.
+Use it to make something cool, have fun, and share what you've learned with others.
+*/
+
+
+/* Styles are in my site.css file. */
+.sticky {}
+.wp-caption {}
+.wp-caption-text {}
+.gallery-caption {}
+.bypostauthor {}
+

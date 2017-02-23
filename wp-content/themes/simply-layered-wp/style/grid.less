@@ -1,0 +1,40 @@
+div {
+	&.container {
+		margin: 0 auto;
+		width: 1080px;
+		@media screen and (max-width: 991px) {
+			width: 780px;
+		}
+		@media screen and (max-width: 767px) {
+			width: auto;
+			padding: 0 15px;
+		}
+	}
+	&.table {
+		display: table;
+	}
+	&.cell {
+		.col-width(12);
+		float: left;
+		box-sizing: border-box;
+	}
+	&.row {
+		width: 100%;
+		&:after {
+			display: table;
+			content: '';
+			clear: both;
+		}
+	}
+	&.vert-middle {
+		vertical-align: middle;
+	}
+}
+
+.col-width(@counter) when (@counter > 0) {
+	.col-width((@counter - 1));    // next iteration
+	@opp: (12 / @counter);
+	&-@{counter} {
+		width: percentage(1 / @opp); // code for each iteration
+	}
+}

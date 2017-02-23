@@ -1,0 +1,22 @@
+/*
+ * Under Construction 
+ * WP toolbar CSS
+ * (c) Web factory Ltd, 2015 - 2016
+ */
+ 
+
+#wp-admin-bar-construction-mode.ucp-enabled .dashicons {
+  color: #02CA02;  
+  font-family: dashicons;
+  font-size: 14px;
+}
+
+#wp-admin-bar-construction-mode.ucp-disabled .dashicons {
+  color: #EA1919;
+  font-family: dashicons;
+  font-size: 14px;
+}
+
+#wp-admin-bar-construction-mode strong {
+  font-weight: bold;
+}

@@ -1,0 +1,199 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2015-02-02 13:32-0500\n"
+"PO-Revision-Date: 2015-02-02 14:11-0500\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.4\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../404.php:3
+msgid "Sorry about this..."
+msgstr "Lo siento..."
+
+#: ../404.php:3
+msgid "It&apos;s not you, it&apos;s me."
+msgstr "No eres tú soy yo"
+
+#: ../404.php:7
+msgid "The page you are looking for could not be found. <a href=\""
+msgstr "La página que está buscando no se pudo encontrar. <a href =\""
+
+#: ../comments.php:31
+msgid ""
+"This post is password protected. Enter the password to view any comments."
+msgstr ""
+"Esta entrada está protegida. Introduzca la contraseña para ver los "
+"comentarios."
+
+#: ../comments.php:56 ../comments.php:75
+msgid "<span class=\"meta-nav\">&larr;</span> Older Comments"
+msgstr "<span class=\"meta-nav\">&larr;</span> Comentarios más viejos"
+
+#: ../comments.php:57 ../comments.php:76
+msgid "Newer Comments <span class=\"meta-nav\">&rarr;</span>"
+msgstr "Fecha Comentarios <span class=\"meta-nav\">&rarr;</span>"
+
+#: ../comments.php:85
+msgid "Comments are closed."
+msgstr "Los comentarios están cerrados."
+
+#: ../footer.php:8
+msgid ""
+"Proudly hosted by <a href=\"http://wordpress.org\" target=\"_blank"
+"\">Wordpress</a> | Theme by <a href=\"http://www.rmlsoft.com\">RML Soft</a>"
+msgstr ""
+"Orgullosamente presentado por <a href=\"http://wordpress.org\" target="
+"\"_blank\">Wordpress</a> | Tema por <a href=\"http://www.rmlsoft.com\">Soft "
+"RML</a>"
+
+#: ../functions.php:25
+msgid "Home"
+msgstr "Casa"
+
+#: ../functions.php:85
+msgid "Homepage Grid"
+msgstr "Página de cuadrícula"
+
+#: ../functions.php:87
+msgid ""
+"Widgets in this area will be shown on the home page below the headline area."
+msgstr ""
+"Widgets en esta zona se mostrarán en la página de inicio por debajo de la "
+"zona de titular."
+
+#: ../functions.php:94
+msgid "Right Sidebar"
+msgstr "Barra lateral derecha"
+
+#: ../functions.php:96
+msgid ""
+"Widgets in this area will be shown on the right side of pages such as the "
+"blog."
+msgstr ""
+"Widgets en esta área se le aparecen en el lado derecho de las páginas, como "
+"el blog."
+
+#: ../functions.php:103
+msgid "Footer Left"
+msgstr "Pie Izquierdo"
+
+#: ../functions.php:105
+msgid "Widgets in this area will be shown on the left side of the footer."
+msgstr ""
+"Widgets en esta área se le aparecen en el lado izquierdo del pie de página."
+
+#: ../functions.php:112
+msgid "Hero Widgets"
+msgstr "héroe Widgets"
+
+#: ../functions.php:114
+msgid ""
+"Widgets in this area will be shown in the page hero beneath head/subhead."
+msgstr ""
+"Widgets en esta zona se mostrarán en la página héroe bajo la cabeza / "
+"subtítulo."
+
+#: ../functions.php:127
+msgid "Site Logo"
+msgstr "Logo del sitio"
+
+#: ../functions.php:128
+msgid "Set Site Logos."
+msgstr "Fijar Sitio Logos."
+
+#: ../functions.php:135
+msgid "Blog Header Image"
+msgstr "Blog Header Image"
+
+#: ../functions.php:136
+msgid "Set the header image for your blog or blog page."
+msgstr "Establecer la imagen de cabecera de tu blog o página del blog."
+
+#: ../functions.php:143
+msgid "Color Scheme"
+msgstr "Combinación de Colores"
+
+#: ../functions.php:144
+msgid "Set the color scheme."
+msgstr "Establecer el esquema de color."
+
+#: ../functions.php:178
+msgid "Upload a large logo"
+msgstr "Sube un logotipo grande"
+
+#: ../functions.php:189
+msgid "Select a header image for the blog"
+msgstr "Seleccione una imagen de cabecera para el blog"
+
+#: ../functions.php:200
+msgid "Upload a smaller logo"
+msgstr "Sube un logotipo más pequeño"
+
+#: ../functions.php:211
+msgid "Select color scheme"
+msgstr "Seleccione el esquema de color"
+
+#: ../functions.php:216
+msgid "Dark"
+msgstr "Oscuro"
+
+#: ../functions.php:217
+msgid "Light"
+msgstr "Luz"
+
+#: ../functions.php:218
+msgid "Blue"
+msgstr "Azul"
+
+#: ../functions.php:219
+msgid "Green"
+msgstr "Verde"
+
+#: ../functions.php:220
+msgid "Orange"
+msgstr "Naranja"
+
+#: ../functions.php:221
+msgid "Plum"
+msgstr "Ciruela"
+
+#: ../index.php:8
+msgid "Search Results"
+msgstr "Resultados de la búsqueda"
+
+#: ../index.php:15
+msgid "Your Search: "
+msgstr "Tu búsqueda:"
+
+#: ../index.php:20
+msgid "Archive:"
+msgstr "Archivo:"
+
+#: ../index.php:45
+msgid "No results"
+msgstr "No hay resultados"
+
+#: ../index.php:45
+msgid "No posts exist"
+msgstr "No existen mensajes"
+
+#: ../index.php:46
+msgid "There are no results for your search."
+msgstr "No hay resultados para su búsqueda."
+
+#: ../index.php:46
+msgid "The author of this blog has not posted anything yet."
+msgstr "El autor de este blog no ha publicado nada todavía."
+
+#: ../searchform.php:2
+msgid "Search"
+msgstr "Buscar"
