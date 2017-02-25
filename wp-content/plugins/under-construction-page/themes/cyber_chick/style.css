@@ -1,5 +1,5 @@
 /*
- * Under Construction 
+ * UnderConstructionPage 
  * Mad Designer theme CSS
  * (c) Web factory Ltd, 2015 - 2016
  */
@@ -63,13 +63,6 @@ h1 {
 
 #social a:hover i {
   color: #e78967;
-}
-
-#linkback {
-  font-size: small;
-  text-align: center;
-  opacity: 0.55;
-  margin: 10px;
 }
 
 @media(max-width:767px){

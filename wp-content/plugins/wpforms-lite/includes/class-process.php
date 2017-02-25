@@ -169,7 +169,7 @@ class WPForms_Process {
 			$entry_id = $this->entry_save( $this->fields, $entry, $form_data['id'], $form_data );
 
 			// Success - send email notification
-			$this->entry_email( $this->fields, $entry, $form_data, $entry_id );
+			$this->entry_email( $this->fields, $entry, $form_data, $entry_id, 'entry' );
 
 			// Pass completed and formatted fields in POST
 			$_POST['wpforms']['complete'] = $this->fields;
@@ -290,8 +290,9 @@ class WPForms_Process {
 	 * @param array $fields
 	 * @param array $entry
 	 * @param array $form_data
+	 * @param array $entry_id
 	 */
-	public function entry_email( $fields, $entry, $form_data ) {
+	public function entry_email( $fields, $entry, $form_data, $entry_id, $context = '' ) {
 
 		// Check that the form was configured for email notifcations
 		if ( empty( $form_data['settings']['notification_enable'] ) || '1' != $form_data['settings']['notification_enable'] ) {
@@ -325,7 +326,7 @@ class WPForms_Process {
 				continue;
 			}
 
-			$process_email = apply_filters( 'wpforms_entry_email_process', true, $fields, $form_data, $notification_id );
+			$process_email = apply_filters( 'wpforms_entry_email_process', true, $fields, $form_data, $notification_id, $context );
 
 			if ( ! $process_email ) {
 				continue;

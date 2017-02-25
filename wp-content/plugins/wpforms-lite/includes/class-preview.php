@@ -258,7 +258,7 @@ class WPForms_Preview {
 		// Customize the page content
 		$title     = sanitize_text_field( $form['settings']['form_title'] );
 		$shortcode = '[wpforms id="' . absint( $form['id'] ) . '"]';
-		$content   = __( 'This is a preview of your form. This page not publically accessible.', 'wpforms' );
+		$content   = __( 'This is a preview of your form. This page is not publically accessible.', 'wpforms' );
 		if ( !empty( $_GET['new_window'] ) ) {
 			$content .= ' <a href="javascript:window.close();">' . __( 'Close this window', 'wpforms' ) . '.</a>';
 		}

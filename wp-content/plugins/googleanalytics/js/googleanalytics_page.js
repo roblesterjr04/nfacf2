@@ -81,6 +81,41 @@ const GA_SAVE_ACCESS_CODE_BTN_ID = 'ga_save_access_code';
         }
     };
 
+    /**
+     * Handles "disable all features" switch button
+     * @type {{init: ga_switcher.init}}
+     */
+    ga_switcher = {
+        init: function (state) {
+            var checkbox = $("#ga-disable");
+
+            if (state) {
+                checkbox.prop('checked', 'checked');
+            } else {
+                checkbox.removeProp('checked');
+            }
+
+            $("#ga-slider").on("click", function (e) {
+                var manually_enter_not_checked = $('#ga_enter_code_manually').not(':checked');
+                if (checkbox.not(':checked').length > 0) {
+                    if (confirm('This will disable Dashboards, Viral Alerts and Google API')) {
+                        setTimeout(function () {
+                            window.location.href = GA_DISABLE_FEATURE_URL;
+                        }, 350);
+                    } else {
+                        setTimeout(function () {
+                            checkbox.removeProp('checked');
+                        }, 350);
+                    }
+                } else { // disable
+                    setTimeout(function () {
+                        window.location.href = GA_ENABLE_FEATURE_URL;
+                    }, 350);
+                }
+            });
+        }
+    };
+
     $(document).ready(function () {
         ga_events.initModalEvents();
     });

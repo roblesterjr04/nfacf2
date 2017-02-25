@@ -4,7 +4,7 @@
   Plugin URI: https://underconstructionpage.com/
   Description: Hide your site behind a great looking under construction page while you do maintenance work.
   Author: Web factory Ltd
-  Version: 1.45
+  Version: 1.70
   Author URI: http://www.webfactoryltd.com/
   Text Domain: under-construction-page
   Domain Path: lang
@@ -135,6 +135,14 @@ class UCP {
   // activate doesn't get fired on upgrades so we have to compensate
   public static function maybe_upgrade() {
     $meta = self::get_meta();
+    $options = self::get_options();
+    
+    // added in v1.70 to rename roles to whitelisted_roles
+    if (isset($options['roles'])) {
+      $options['whitelisted_roles'] = $options['roles'];
+      unset($options['roles']);
+      update_option(UCP_OPTIONS_KEY, $options);
+    }
     
     // check if we need to convert options from the old format to new, or maybe it is already done
     if (isset($meta['options_ver']) && $meta['options_ver'] == self::$version) {
@@ -143,10 +151,9 @@ class UCP {
     
     if (get_option('set_size') || get_option('set_tweet') || get_option('set_fb') || get_option('set_font') || get_option('set_msg') || get_option('set_opt') || get_option('set_admin')) {
       // convert old options to new
-      $options = self::get_options();
       $options['status'] = (get_option('set_opt') === 'Yes')? '1': '0';
       $options['content'] = trim(get_option('set_msg'));
-      $options['roles'] = (get_option('set_admin') === 'No')? array('administrator'): array();
+      $options['whitelisted_roles'] = (get_option('set_admin') === 'No')? array('administrator'): array();
       $options['social_facebook'] = trim(get_option('set_fb'));
       $options['social_twitter'] = trim(get_option('set_tweet'));
       update_option(UCP_OPTIONS_KEY, $options);
@@ -208,12 +215,23 @@ class UCP {
     
     if (true == self::is_construction_mode_enabled(false) 
         || (is_user_logged_in() && isset($_GET['ucp_preview']))) {
-      header(wp_get_server_protocol() . ' 503 Service Unavailable');
+      header(self::wp_get_server_protocol() . ' 503 Service Unavailable');
       echo self::get_template($options['theme']);
       exit;
     }
   } // display_construction_page
 
+  
+  // keeping compatibility with WP < v4.4
+  static function wp_get_server_protocol() {
+    $protocol = $_SERVER['SERVER_PROTOCOL'];
+    if (!in_array($protocol, array('HTTP/1.1', 'HTTP/2', 'HTTP/2.0'))) {
+        $protocol = 'HTTP/1.0';
+    }
+    
+    return $protocol;
+  } // wp_get_server_protocol
+  
   
   // disables feed if necessary
   static function disable_feed() {
@@ -235,8 +253,6 @@ class UCP {
     } else {
       $open_features_survey = false;
     }
-    
-    wp_enqueue_style('ucp-toolbar', UCP_PLUGIN_URL . 'css/ucp-toolbar.css', array(), self::$version);
     
     $js_localize = array('undocumented_error' => __('An undocumented error has occured. Please refresh the page and try again.', 'under-construction-page'),
                          'plugin_name' => __('UnderConstruction', 'under-construction-page'),
@@ -347,6 +363,18 @@ class UCP {
     
     wp_send_json_success();
   } // submit_survey_ajax
+ 
+  
+  static function encode_email($email) {
+    $len = strlen($email);
+    $out = '';
+    
+    for ($i = 0; $i < $len; $i++) {
+      $out .= '&#'. ord($email[$i]) . ';';
+    }
+  
+    return $out;
+  } // encode_email
   
   
   // parse shortcode alike variables
@@ -372,31 +400,43 @@ class UCP {
     $out = '';
     
     if (!empty($options['social_facebook'])) {
-      $out .= '<a href="' . $options['social_facebook'] . '" target="_blank"><i class="fa fa-facebook-square fa-3x"></i></a>';
+      $out .= '<a title="Facebook" href="' . $options['social_facebook'] . '" target="_blank"><i class="fa fa-facebook-square fa-3x"></i></a>';
     }
     if (!empty($options['social_twitter'])) {
-      $out .= '<a href="' . $options['social_twitter'] . '" target="_blank"><i class="fa fa-twitter-square fa-3x"></i></a>';
+      $out .= '<a title="Twitter" href="' . $options['social_twitter'] . '" target="_blank"><i class="fa fa-twitter-square fa-3x"></i></a>';
     }
     if (!empty($options['social_google'])) {
-      $out .= '<a href="' . $options['social_google'] . '" target="_blank"><i class="fa fa-google-plus-square fa-3x"></i></a>';
+      $out .= '<a title="Google+" href="' . $options['social_google'] . '" target="_blank"><i class="fa fa-google-plus-square fa-3x"></i></a>';
     }
     if (!empty($options['social_linkedin'])) {
-      $out .= '<a href="' . $options['social_linkedin'] . '" target="_blank"><i class="fa fa-linkedin-square fa-3x"></i></a>';
+      $out .= '<a title="LinkedIn" href="' . $options['social_linkedin'] . '" target="_blank"><i class="fa fa-linkedin-square fa-3x"></i></a>';
     }
     if (!empty($options['social_youtube'])) {
-      $out .= '<a href="' . $options['social_youtube'] . '" target="_blank"><i class="fa fa-youtube-square fa-3x"></i></a>';
+      $out .= '<a title="YouTube" href="' . $options['social_youtube'] . '" target="_blank"><i class="fa fa-youtube-square fa-3x"></i></a>';
     }
     if (!empty($options['social_pinterest'])) {
-      $out .= '<a href="' . $options['social_pinterest'] . '" target="_blank"><i class="fa fa-pinterest-square fa-3x"></i></a>';
+      $out .= '<a title="Pinterest" href="' . $options['social_pinterest'] . '" target="_blank"><i class="fa fa-pinterest-square fa-3x"></i></a>';
     }
     if (!empty($options['social_dribbble'])) {
-      $out .= '<a href="' . $options['social_dribbble'] . '" target="_blank"><i class="fa fa-dribbble fa-3x"></i></a>';
+      $out .= '<a title="Dribbble" href="' . $options['social_dribbble'] . '" target="_blank"><i class="fa fa-dribbble fa-3x"></i></a>';
     }
     if (!empty($options['social_behance'])) {
-      $out .= '<a href="' . $options['social_behance'] . '" target="_blank"><i class="fa fa-behance-square fa-3x"></i></a>';
+      $out .= '<a title="Behance" href="' . $options['social_behance'] . '" target="_blank"><i class="fa fa-behance-square fa-3x"></i></a>';
     }
     if (!empty($options['social_instagram'])) {
-      $out .= '<a href="' . $options['social_instagram'] . '" target="_blank"><i class="fa fa-instagram fa-3x"></i></a>';
+      $out .= '<a title="Instagram" href="' . $options['social_instagram'] . '" target="_blank"><i class="fa fa-instagram fa-3x"></i></a>';
+    }
+    if (!empty($options['social_skype'])) {
+      $out .= '<a title="Skype" href="skype:' . $options['social_skype'] . '?chat"><i class="fa fa-skype fa-3x"></i></a>';
+    }
+    if (!empty($options['social_whatsapp'])) {
+      $out .= '<a title="WhatsApp" href="whatsapp:' . $options['social_whatsapp'] . '"><i class="fa fa-whatsapp fa-3x"></i></a>';
+    }
+    if (!empty($options['social_email'])) {
+      $out .= '<a title="Email" href="mailto:' . self::encode_email($options['social_email']) . '"><i class="fa fa-envelope fa-3x"></i></a>';
+    }
+    if (!empty($options['social_phone'])) {
+      $out .= '<a title="Phone" href="callto:' . $options['social_phone'] . '"><i class="fa fa-phone-square fa-3x"></i></a>';
     }
     
     return $out;
@@ -407,8 +447,11 @@ class UCP {
   static function generate_head($options, $template_id) {
     $out = '';
     
+    $out .= '<link rel="stylesheet" href="' . trailingslashit(UCP_PLUGIN_URL . 'themes') . 'css/common.css?v=' . self::$version . '" type="text/css">';
+    
     if (!empty($options['ga_tracking_id'])) {
-      $out .= "<script>
+      $out .= "
+      <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -418,7 +461,11 @@ class UCP {
       </script>";
     }
     
-    return $out;
+    if (!empty($options['custom_css'])) {
+      $out .= "\n" . '<style type="text/css">' . $options['custom_css'] . '</style>';
+    }
+    
+    return trim($out);
   } // generate_head
   
   
@@ -426,13 +473,24 @@ class UCP {
   static function generate_footer($options, $template_id) {
     $out = '';
     
-    if ($options['linkback'] == 1) {
+    if ($options['linkback'] == '1') {
       $tmp = md5(get_site_url());
       if ($tmp[0] < 9) {
         $out .= '<p id="linkback">Create stunning <a href="https://underconstructionpage.com/" target="_blank">under construction pages for WordPress</a> for free.</p>';
       } else {
         $out .= '<p id="linkback">Create free <a href="https://underconstructionpage.com/" target="_blank">landing pages for WordPress</a>.</p>';
       }
+    }
+    
+    if ($options['login_button'] == '1') {
+      if (is_user_logged_in()) {
+        $out .= '<div id="login-button" class="loggedin">';
+        $out .= '<a title="Open WordPress admin" href="' . get_site_url() . '/wp-admin/"><i class="fa fa-wordpress fa-2x" aria-hidden="true"></i></a>';
+      } else {
+        $out .= '<div id="login-button" class="loggedout">';
+        $out .= '<a title="Log in to WordPress admin" href="' . get_site_url() . '/wp-login.php"><i class="fa fa-wordpress fa-2x" aria-hidden="true"></i></a>';
+      }
+      $out .= '</div>';
     }
     
     return $out;
@@ -450,6 +508,7 @@ class UCP {
     $vars['theme-url'] = trailingslashit(UCP_PLUGIN_URL . 'themes/' . $template_id);
     $vars['theme-url-common'] = trailingslashit(UCP_PLUGIN_URL . 'themes');
     $vars['title'] = self::parse_vars($options['title']);
+    $vars['generator'] = 'Free UnderConstructionPage plugin for WordPress';
     $vars['heading1'] = self::parse_vars($options['heading1']);
     $vars['content'] = nl2br(self::parse_vars($options['content']));
     $vars['description'] = self::parse_vars($options['description']);
@@ -488,7 +547,7 @@ class UCP {
         return false;
       } elseif (defined('WP_CLI') && WP_CLI) {
         return false;
-      } elseif (self::user_has_role($options['roles'])) {
+      } elseif (self::user_has_role($options['whitelisted_roles'])) {
         return false;
       } elseif (in_array($current_user->ID, $options['whitelisted_users'])) {
         return false;
@@ -564,10 +623,10 @@ class UCP {
     global $wp_admin_bar;
 
     if (self::is_construction_mode_enabled(true)) {
-      $title = '<span class="dashicons dashicons-admin-generic"></span> <span class="ab-label">Under construction mode is <strong>enabled</strong></span>';
+      $title = '<img style="height: 17px; margin-bottom: -4px; padding-right: 3px;" src="' . UCP_PLUGIN_URL . '/images/ucp_icon_enabled.png" alt="Under construction mode is enabled" title="Under construction mode is enabled"> <span class="ab-label">Under construction mode is <strong style="font-weight: bold;">enabled</strong></span>';
       $class = 'ucp-enabled';
     } else {
-      $title = '<span class="dashicons dashicons-admin-generic"></span> <span class="ab-label">Under construction mode is disabled</span>';
+      $title = '<img style="height: 17px; margin-bottom: -4px; padding-right: 3px;" src="' . UCP_PLUGIN_URL . '/images/ucp_icon_disabled.png" alt="Under construction mode is disabled" title="Under construction mode is disabled"> <span class="ab-label">Under construction mode is <strong style="font-weight: bold;">disabled</strong></span>';
       $class = 'ucp-disabled';
     }
     
@@ -632,6 +691,7 @@ class UCP {
                       'end_date' => '',
                       'ga_tracking_id' => '',
                       'theme' => 'mad_designer',
+                      'custom_css' => '',
                       'title' => '[site-title] is under construction',
                       'description' => '[site-tagline]',
                       'heading1' => 'Sorry, we\'re doing some work on the site',
@@ -645,8 +705,13 @@ class UCP {
                       'social_dribbble' => '',
                       'social_behance' => '',
                       'social_instagram' => '',
+                      'social_email' => '',
+                      'social_phone' => '',
+                      'social_skype' => '',
+                      'social_whatsapp' => '',
+                      'login_button' => '1',
                       'linkback' => '0',
-                      'roles' => array('administrator'),
+                      'whitelisted_roles' => array('administrator'),
                       'whitelisted_users' => array()
                       );
 
@@ -664,6 +729,7 @@ class UCP {
         case 'description':
         case 'heading1':
         case 'content':
+        case 'custom_css':
         case 'social_facebook':
         case 'social_twitter':
         case 'social_google':
@@ -673,6 +739,10 @@ class UCP {
         case 'social_dribbble':
         case 'social_behance':
         case 'social_instagram':
+        case 'social_email':
+        case 'social_phone':
+        case 'social_skype':
+        case 'social_whatsapp':
           $options[$key] = trim($value);
         break;
         case 'ga_tracking_id':
@@ -684,9 +754,9 @@ class UCP {
       } // switch
     } // foreach
     
-    $options['roles'] = empty($options['roles'])? array(): $options['roles'];
+    $options['whitelisted_roles'] = empty($options['whitelisted_roles'])? array(): $options['whitelisted_roles'];
     $options['whitelisted_users'] = empty($options['whitelisted_users'])? array(): $options['whitelisted_users'];
-    $options = self::check_var_isset($options, array('status' => 0, 'linkback' => 0));
+    $options = self::check_var_isset($options, array('status' => 0, 'linkback' => 0, 'login_button' => 0));
     
     if (!empty($options['ga_tracking_id']) && preg_match('/^UA-\d{3,}-\d{1,3}$/', $options['ga_tracking_id']) === 0) {
       add_settings_error('ucp', 'ga_tracking_id', 'Please enter a valid Google Analytics Tracking ID, or leave empty to disable tracking.');
@@ -795,14 +865,14 @@ class UCP {
     
     echo '<tr valign="top">
     <th scope="row"><label for="end_date">End Date &amp; Time</label></th>
-    <td><input id="end_date" type="text" class="datepicker" name="' . UCP_OPTIONS_KEY . '[end_date]" value="' . $options['end_date'] . '" placeholder="yyyy-mm-dd hh:mm"><span title="Open date & time picker" alt="Open date & time picker" class="show-datepicker dashicons dashicons-calendar-alt"></span> <span title="Clear date & time" alt="Clear date & time" class="clear-datepicker dashicons dashicons-no"></span>';
+    <td><input id="end_date" type="text" class="datepicker" name="' . UCP_OPTIONS_KEY . '[end_date]" value="' . esc_attr($options['end_date']) . '" placeholder="yyyy-mm-dd hh:mm"><span title="Open date & time picker" alt="Open date & time picker" class="show-datepicker dashicons dashicons-calendar-alt"></span> <span title="Clear date & time" alt="Clear date & time" class="clear-datepicker dashicons dashicons-no"></span>';
     echo '<p class="description">If enabled, construction mode will automatically stop showing on the selected date.<br>
     This option will not "auto-enable" construction mode. Status has to be set to "On".</p>';
     echo '</td></tr>';
     
     echo '<tr valign="top">
     <th scope="row"><label for="ga_tracking_id">Google Analytics Tracking ID</label></th>
-    <td><input id="ga_tracking_id" type="text" class="code" name="' . UCP_OPTIONS_KEY . '[ga_tracking_id]" value="' . $options['ga_tracking_id'] . '" placeholder="UA-xxxxxx-xx">';
+    <td><input id="ga_tracking_id" type="text" class="code" name="' . UCP_OPTIONS_KEY . '[ga_tracking_id]" value="' . esc_attr($options['ga_tracking_id']) . '" placeholder="UA-xxxxxx-xx">';
     echo '<p class="description">Enter the unique tracking ID found in your GA tracking profile settings to track visits to the page.<br>Leave blank to disable tracking.</p>';
     echo '</td></tr>';
     
@@ -818,7 +888,7 @@ class UCP {
     
     echo '<tr valign="top">
     <th scope="row"><label for="title">Title</label></th>
-    <td><input type="text" id="title" class="regular-text" name="' . UCP_OPTIONS_KEY . '[title]" value="' . $options['title'] . '" />';
+    <td><input type="text" id="title" class="regular-text" name="' . UCP_OPTIONS_KEY . '[title]" value="' . esc_attr($options['title']) . '" />';
     echo '<p class="description">Page title. Default: ' . $default_options['title'] . '</p>';
     echo '<p><b>Available shortcodes:</b> (only active in UC themes, not on the rest of the site)</p>
     <ul class="ucp-list">
@@ -832,79 +902,37 @@ class UCP {
 
     echo '<tr valign="top">
     <th scope="row"><label for="description">Description</label></th>
-    <td><input id="description" type="text" class="large-text" name="' . UCP_OPTIONS_KEY . '[description]" value="' . $options['description'] . '" />';
+    <td><input id="description" type="text" class="large-text" name="' . UCP_OPTIONS_KEY . '[description]" value="' . esc_attr($options['description']) . '" />';
     echo '<p class="description">Description meta tag (see above for available <a href="#title">shortcodes</a>). Default: ' . $default_options['description'] . '</p>';
     echo '</td></tr>';
     
     echo '<tr valign="top">
     <th scope="row"><label for="heading1">Headline</label></th>
-    <td><input id="heading1" type="text" class="large-text" name="' . UCP_OPTIONS_KEY . '[heading1]" value="' . $options['heading1'] . '" />';
+    <td><input id="heading1" type="text" class="large-text" name="' . UCP_OPTIONS_KEY . '[heading1]" value="' . esc_attr($options['heading1']) . '" />';
     echo '<p class="description">Main heading/title (see above for available <a href="#title">shortcodes</a>). Default: ' . $default_options['heading1'] . '</p>';
     echo '</td></tr>';
 
-    echo '<tr valign="top">
+    echo '<tr valign="top" id="content_wrap">
     <th scope="row"><label for="content">Content</label></th>
     <td>';
     wp_editor($options['content'], 'content', array('tabfocus_elements' => 'insert-media-button,save-post', 'editor_height' => 250, 'resize' => 1, 'textarea_name' => UCP_OPTIONS_KEY . '[content]', 'drag_drop_upload' => 1));
     echo '<p class="description">All HTML elements are allowed. Shortcodes are not parsed except <a href="#title">UC template ones</a>. Default: ' . $default_options['content'] . '</p>';
     echo '</td></tr>';
     
-    echo '<tr valign="top">
-    <th scope="row"><label for="social_facebook">Facebook Page</label></th>
-    <td><input id="social_facebook" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_facebook]" value="' . $options['social_facebook'] . '" placeholder="Facebook business or personal page URL">';
-    echo '<p class="description">Complete URL, with http prefix, to Facebook page.</p>';
+    echo '<tr valign="top" id="login_button_wrap">
+    <th scope="row"><label for="login_button">Login Button</label></th>
+    <td><div class="onoffswitch">
+    <input ' . self::checked(1, $options['login_button']) . ' type="checkbox" value="1" name="' . UCP_OPTIONS_KEY . '[login_button]" class="onoffswitch-checkbox" id="login_button">
+    <label class="onoffswitch-label" for="login_button">
+        <span class="onoffswitch-inner"></span>
+        <span class="onoffswitch-switch"></span>
+    </label>
+    </div>';
+    echo '<p class="description">Show a descrete link to the login form, or WP admin if you\'re logged in, in the lower right corner of the page.</p>';
     echo '</td></tr>';
     
     echo '<tr valign="top">
-    <th scope="row"><label for="social_twitter">Twitter Profile</label></th>
-    <td><input id="social_twitter" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_twitter]" value="' . $options['social_twitter'] . '" placeholder="Twitter profile URL">';
-    echo '<p class="description">Complete URL, with http prefix, to Twitter profile page.</p>';
-    echo '</td></tr>';
-    
-    echo '<tr valign="top">
-    <th scope="row"><label for="social_google">Google Page</label></th>
-    <td><input id="social_google" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_google]" value="' . $options['social_google'] . '" placeholder="Google+ page URL">';
-    echo '<p class="description">Complete URL, with http prefix, to Google+ page.</p>';
-    echo '</td></tr>';
-    
-    echo '<tr valign="top">
-    <th scope="row"><label for="social_linkedin">LinkedIn Profile</label></th>
-    <td><input id="social_linkedin" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_linkedin]" value="' . $options['social_linkedin'] . '" placeholder="LinkedIn profile page URL">';
-    echo '<p class="description">Complete URL, with http prefix, to LinkedIn profile page.</p>';
-    echo '</td></tr>';
-    
-    echo '<tr valign="top">
-    <th scope="row"><label for="social_youtube">YouTube Profile Page or Video</label></th>
-    <td><input id="social_youtube" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_youtube]" value="' . $options['social_youtube'] . '" placeholder="YouTube page or video URL">';
-    echo '<p class="description">Complete URL, with http prefix, to YouTube page or video.</p>';
-    echo '</td></tr>';
-    
-    echo '<tr valign="top">
-    <th scope="row"><label for="social_pinterest">Pinterest Profile</label></th>
-    <td><input id="social_pinterest" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_pinterest]" value="' . $options['social_pinterest'] . '" placeholder="Pinterest profile URL">';
-    echo '<p class="description">Complete URL, with http prefix, to Pinterest profile.</p>';
-    echo '</td></tr>';
-    
-    echo '<tr valign="top">
-    <th scope="row"><label for="social_dribbble">Dribbble Profile</label></th>
-    <td><input id="social_dribbble" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_dribbble]" value="' . $options['social_dribbble'] . '" placeholder="Dribbble profile URL">';
-    echo '<p class="description">Complete URL, with http prefix, to Dribbble profile.</p>';
-    echo '</td></tr>';
-    
-    echo '<tr valign="top">
-    <th scope="row"><label for="social_behance">Behance Profile</label></th>
-    <td><input id="social_behance" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_behance]" value="' . $options['social_behance'] . '" placeholder="Behance profile URL">';
-    echo '<p class="description">Complete URL, with http prefix, to Behance profile.</p>';
-    echo '</td></tr>';
-    
-    echo '<tr valign="top">
-    <th scope="row"><label for="social_instagram">Instagram Profile</label></th>
-    <td><input id="social_instagram" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_instagram]" value="' . $options['social_instagram'] . '" placeholder="Instagram profile URL">';
-    echo '<p class="description">Complete URL, with http prefix, to Instagram profile.</p>';
-    echo '</td></tr>';
-    
-    echo '<tr valign="top">
-    <th scope="row"><label for="linkback">Show some Love</label></th>
+    <th scope="row"><label for="linkback">Show Some Love</label></th>
     <td><div class="onoffswitch">
     <input ' . self::checked(1, $options['linkback']) . ' type="checkbox" value="1" name="' . UCP_OPTIONS_KEY . '[linkback]" class="onoffswitch-checkbox" id="linkback">
     <label class="onoffswitch-label" for="linkback">
@@ -913,6 +941,90 @@ class UCP {
     </label>
     </div>';
     echo '<p class="description">Please help others learn about this free plugin by placing a small link in the footer. Thank you very much!</p>';
+    echo '</td></tr>';
+    
+    
+    echo '</table>';
+    
+    echo '<h2 class="title">Social &amp; Contact Icons</h2>';
+    
+    echo '<table class="form-table">';
+    echo '<tr valign="top">
+    <th scope="row"><label for="social_facebook">Facebook Page</label></th>
+    <td><input id="social_facebook" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_facebook]" value="' . esc_attr($options['social_facebook']) . '" placeholder="Facebook business or personal page URL">';
+    echo '<p class="description">Complete URL, with http prefix, to Facebook page.</p>';
+    echo '</td></tr>';
+    
+    echo '<tr valign="top">
+    <th scope="row"><label for="social_twitter">Twitter Profile</label></th>
+    <td><input id="social_twitter" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_twitter]" value="' . esc_attr($options['social_twitter']) . '" placeholder="Twitter profile URL">';
+    echo '<p class="description">Complete URL, with http prefix, to Twitter profile page.</p>';
+    echo '</td></tr>';
+    
+    echo '<tr valign="top">
+    <th scope="row"><label for="social_google">Google Page</label></th>
+    <td><input id="social_google" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_google]" value="' . esc_attr($options['social_google']) . '" placeholder="Google+ page URL">';
+    echo '<p class="description">Complete URL, with http prefix, to Google+ page.</p>';
+    echo '</td></tr>';
+    
+    echo '<tr valign="top">
+    <th scope="row"><label for="social_linkedin">LinkedIn Profile</label></th>
+    <td><input id="social_linkedin" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_linkedin]" value="' . esc_attr($options['social_linkedin']) . '" placeholder="LinkedIn profile page URL">';
+    echo '<p class="description">Complete URL, with http prefix, to LinkedIn profile page.</p>';
+    echo '</td></tr>';
+    
+    echo '<tr valign="top">
+    <th scope="row"><label for="social_youtube">YouTube Profile Page or Video</label></th>
+    <td><input id="social_youtube" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_youtube]" value="' . esc_attr($options['social_youtube']) . '" placeholder="YouTube page or video URL">';
+    echo '<p class="description">Complete URL, with http prefix, to YouTube page or video.</p>';
+    echo '</td></tr>';
+    
+    echo '<tr valign="top">
+    <th scope="row"><label for="social_pinterest">Pinterest Profile</label></th>
+    <td><input id="social_pinterest" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_pinterest]" value="' . esc_attr($options['social_pinterest']) . '" placeholder="Pinterest profile URL">';
+    echo '<p class="description">Complete URL, with http prefix, to Pinterest profile.</p>';
+    echo '</td></tr>';
+    
+    echo '<tr valign="top">
+    <th scope="row"><label for="social_dribbble">Dribbble Profile</label></th>
+    <td><input id="social_dribbble" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_dribbble]" value="' . esc_attr($options['social_dribbble']) . '" placeholder="Dribbble profile URL">';
+    echo '<p class="description">Complete URL, with http prefix, to Dribbble profile.</p>';
+    echo '</td></tr>';
+    
+    echo '<tr valign="top">
+    <th scope="row"><label for="social_behance">Behance Profile</label></th>
+    <td><input id="social_behance" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_behance]" value="' . esc_attr($options['social_behance']) . '" placeholder="Behance profile URL">';
+    echo '<p class="description">Complete URL, with http prefix, to Behance profile.</p>';
+    echo '</td></tr>';
+    
+    echo '<tr valign="top">
+    <th scope="row"><label for="social_instagram">Instagram Profile</label></th>
+    <td><input id="social_instagram" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_instagram]" value="' . esc_attr($options['social_instagram']) . '" placeholder="Instagram profile URL">';
+    echo '<p class="description">Complete URL, with http prefix, to Instagram profile.</p>';
+    echo '</td></tr>';
+    
+    echo '<tr valign="top">
+    <th scope="row"><label for="social_skype">Skype Username</label></th>
+    <td><input id="social_skype" type="text" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_skype]" value="' . esc_attr($options['social_skype']) . '" placeholder="Skype username / account name">';
+    echo '<p class="description">Skype username / account name.</p>';
+    echo '</td></tr>';
+    
+    echo '<tr valign="top">
+    <th scope="row"><label for="social_whatsapp">WhatsApp Phone Number</label></th>
+    <td><input id="social_whatsapp" type="text" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_whatsapp]" value="' . esc_attr($options['social_whatsapp']) . '" placeholder="+1-123-456-789">';
+    echo '<p class="description">WhatsApp phone number in full international format.</p>';
+    echo '</td></tr>';
+    
+    echo '<tr valign="top">
+    <th scope="row"><label for="social_email">Email Address</label></th>
+    <td><input id="social_email" type="email" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_email]" value="' . esc_attr($options['social_email']) . '" placeholder="name@domain.com">';
+    echo '<p class="description">Email will be encoded on the page to protect it from email address harvesters.</p>';
+    echo '</td></tr>';
+    
+    echo '<tr valign="top">
+    <th scope="row"><label for="social_phone">Phone Number</label></th>
+    <td><input id="social_phone" type="tel" class="regular-text" name="' . UCP_OPTIONS_KEY . '[social_phone]" value="' . esc_attr($options['social_phone']) . '" placeholder="+1-123-456-789">';
+    echo '<p class="description">Complete phone number in international format.</p>';
     echo '</td></tr>';
     
     echo '</table>';
@@ -925,7 +1037,7 @@ class UCP {
     
     $img_path = UCP_PLUGIN_URL . 'images/';
     
-    $themes = array('mad_designer' => 'Mad Designer', 'plain_text' => 'Plain Text', 'under_construction' => 'Under Construction', 'dark' => 'Things Went Dark', 'forklift' => 'Forklift at Work', 'under_construction_text' => 'Under Construction Text', 'cyber_chick' => 'Cyber Chick', 'rocket' => 'Rocket Launch');
+    $themes = array('mad_designer' => 'Mad Designer', 'plain_text' => 'Plain Text', 'under_construction' => 'Under Construction', 'dark' => 'Things Went Dark', 'forklift' => 'Forklift at Work', 'under_construction_text' => 'Under Construction Text', 'cyber_chick' => 'Cyber Chick', 'rocket' => 'Rocket Launch', 'loader' => 'Loader at Work', 'cyber_chick_dark' => 'Cyber Chick Dark', 'safe' => 'Safe', 'people' => 'People at Work', 'windmill' => 'Windmill');
     
     echo '<table class="form-table">';
     echo '<tr valign="top">
@@ -942,14 +1054,23 @@ class UCP {
       echo '<div class="ucp-thumb' . $class . '" data-theme-id="' . $theme_id . '"><img src="' . $img_path . $theme_id . '.png" alt="' . $theme_name . '" title="' . $theme_name . '" /><span>' . $theme_name . '</span></div>';
     }
     
-    echo '<div class="ucp-thumb-special"><a href="https://twitter.com/intent/tweet?text=' . urlencode('@webfactoryltd I need more themes for the free Under Construction #wordpress plugin. When are they coming out?') . '&url=https://wordpress.org/plugins/under-construction-page/" target="_blank"><img src="' . $img_path . 'more_coming_soon.png" alt="Need more themes?" title="Need more themes?" /></a><br />Click for More Themes</div>';
+    echo '<div class="ucp-thumb-special"><a href="https://twitter.com/intent/tweet?text=' . urlencode('I need more themes for the free Under Construction #wordpress plugin. When are they coming out? @webfactoryltd') . '&url=https://wordpress.org/plugins/under-construction-page/" target="_blank"><img src="' . $img_path . 'more_coming_soon.png" alt="Need more themes?" title="Need more themes?" /></a><br />Click for More Themes</div>';
     
+    echo '</td></tr>';
+    
+    echo '<tr valign="top">
+    <th scope="row"><label for="custom_css">Custom CSS</label></th>
+    <td>';
+    echo '<textarea data-autoresize="1" rows="3" id="custom_css" class="code large-text" name="' . UCP_OPTIONS_KEY . '[custom_css]" placeholder=".selector { property-name: property-value; }">' . esc_textarea($options['custom_css']) . '</textarea>';
+    echo '<p class="description">&lt;style&gt; tags will be added automatically. Do not include them in your code.<br>
+    For RTL languages support add: <code>body { direction: rtl; }</code></p>';
     echo '</td></tr>';
     
     echo '</table>';
   } // tab_design
   
   
+  // markup & logic for access tab
   static function tab_access() {
     $options = self::get_options();
     $default_options = self::default_options();
@@ -973,7 +1094,7 @@ class UCP {
     <td>';
     
     foreach ($roles as $tmp_role) {
-      echo  '<input name="' . UCP_OPTIONS_KEY . '[roles][]" id="roles-' . $tmp_role['val'] . '" ' . self::checked($tmp_role['val'], $options['roles'], false) . ' value="' . $tmp_role['val'] . '" type="checkbox" /> <label for="roles-' . $tmp_role['val'] . '">' . $tmp_role['label'] . '</label><br />';
+      echo  '<input name="' . UCP_OPTIONS_KEY . '[whitelisted_roles][]" id="roles-' . $tmp_role['val'] . '" ' . self::checked($tmp_role['val'], $options['whitelisted_roles'], false) . ' value="' . $tmp_role['val'] . '" type="checkbox" /> <label for="roles-' . $tmp_role['val'] . '">' . $tmp_role['label'] . '</label><br />';
     }
     echo '<p class="description">Selected user roles will <b>not</b> be affected by the under construction mode and will always see the "normal" site. Default: administrator.</p>';
     echo '</td></tr>';
@@ -990,19 +1111,29 @@ class UCP {
   } // tab_access
   
 
-  // todo next version  
-  static function tab_emails() {
-    $options = self::get_options();
-    $default_options = self::default_options();
-  } // tab_emails
+  // support tab - FAQ and links
+  static function tab_support() {
+    echo '<h2>FAQ</h2>';
+    
+    echo '<p><b>How can I work on my site while construction mode is enabled?</b><br>Make sure your user role (probably admin) is selected under <a class="change_tab" data-tab="3" href="#whitelisted-roles">Access - Whitelisted User Roles</a> and open the site while logged in.</p>';
+    
+    echo '<p><b>How can I log in / access WordPress admin after construction mode has been enabled?</b><br>Enable the <a class="change_tab" data-tab="2" href="#login_button_wrap">Login Button</a> option under Content, and a login link will be shown in the lower right corner of the under construction page.</p>';
+    
+    echo '<p><b>How do I add my logo to the page?</b><br>Head over to <a class="change_tab" data-tab="2" href="#content_wrap">Content</a> and click "Add Media". Upload/select the logo, position it as you see fit and add other content.</p>';
+    
+    echo '<p><b>I\'ve made changes to UCP, but they are not visible. What do I do?</b><br>Click "Save Changes" one more time. Open your site and force refresh browser cache (Ctrl or Shift + F5). If that doesn\'t help it means you have a caching plugin installed. Purge/delete cache in that plugin or disable it.</p>';
+    
+    echo '<p><b>How can I get more designs? Where do I download them?</b><br>We update the plugin every 7-10 days and each update comes with at least one new theme/design. There is no other way of getting more designs nor a place to download them.</p>';
+    
+    echo '<p><b>How can I edit designs?</b><br>There is an option to add <a class="change_tab" data-tab="1" href="#custom_css">custom CSS</a>. If you want more than that you will have to edit the source files located in <code>/under-construction-page/themes/</code>.</p>';
+    
+    echo '<p><b>I have disabled UCP but the under construction page is still visible. How do I remove it?</b><br>Open your site and force refresh browser cache (Ctrl or Shift + F5). If that doesn\'t help it means you have a caching plugin installed. Purge/delete cache in that plugin or disable it.<br>If that fails too contact your hosting provider and ask to empty the site cache for you.</p>';
+    
+    echo '<h2><br>How to get support?</h2>';
+    
+    echo '<p>We do our very best to keep <span class="ucp-logo">UnderConstructionPage</span> bug free and compatible with all plugins and themes. If you run into a problem head over to the <a target="_blank" href="http://wordpress.org/support/plugin/under-construction-page">official support forum</a>, open a new thread, and we\'ll help you ASAP.</p>';
+  } // tab_support
   
-  
-  // todo next version
-  static function tab_advanced() {
-    $options = self::get_options();
-    $default_options = self::default_options();
-  } // tab_advanced
-
   
   // output the whole options page
   static function main_page() {
@@ -1014,7 +1145,7 @@ class UCP {
     $default_options = self::default_options();
 
     echo '<div class="wrap">
-          <h1 class="ucp-logo"><img src="' . UCP_PLUGIN_URL . '/images/under-construction-page-logo.png" alt="UnderConstructionPage" title="UnderConstructionPage">UnderConstructionPage</h1>';
+          <h1 class="ucp-logo"><img src="' . UCP_PLUGIN_URL . '/images/ucp_logo.png" alt="UnderConstructionPage" title="UnderConstructionPage">UnderConstructionPage</h1>';
 
     echo '<form action="options.php" method="post" id="ucp_form">';
     settings_fields(UCP_OPTIONS_KEY);
@@ -1024,10 +1155,7 @@ class UCP {
     $tabs[] = array('id' => 'ucp_design', 'icon' => 'dashicons-admin-customizer', 'class' => '', 'label' => 'Design', 'callback' => array(__CLASS__, 'tab_design'));
     $tabs[] = array('id' => 'ucp_content', 'icon' => 'dashicons-format-aside', 'class' => '', 'label' => 'Content', 'callback' => array(__CLASS__, 'tab_content'));
     $tabs[] = array('id' => 'ucp_access', 'icon' => 'dashicons-shield', 'class' => '', 'label' => 'Access', 'callback' => array(__CLASS__, 'tab_access'));
-    
-    // todo next version
-    //$tabs[] = array('id' => 'ucp_emails', 'class' => '', 'label' => 'Emails', 'callback' => array(__CLASS__, 'tab_emails'));
-    //$tabs[] = array('id' => 'ucp_advanced', 'class' => '', 'label' => 'Advanced', 'callback' => array(__CLASS__, 'tab_advanced'));
+    $tabs[] = array('id' => 'ucp_support', 'icon' => 'dashicons-sos', 'class' => '', 'label' => 'Support', 'callback' => array(__CLASS__, 'tab_support'));
     $tabs = apply_filters('ucp_tabs', $tabs);
 
     echo '<div id="ucp_tabs" class="ui-tabs" style="display: none;">';
@@ -1060,35 +1188,39 @@ class UCP {
     echo '<div id="features-survey-dialog" style="display: none;" title="Please help us make UCP better"><span class="ui-helper-hidden-accessible"><input type="text"/></span>';
     echo '<p>We strive to add at least one new feature to <span class="ucp-logo">UnderConstructionPage</span> every week and want to make it as usefull as possible.<br><b>What new features do you need the most?</b> Please choose two:</p>';
     
-    echo '<div class="question-wrapper" data-value="designs">';
-    echo '<div class="question"><b>More designs like the ones we already have</b><br>';
-    echo '<i>Fun, unique &amp; made just for the UCP plugin</i></div>';
-    echo '<span class="dashicons dashicons-yes"></span>';
-    echo '</div>';
+    $questions = array();
+    $questions[] = '<div class="question-wrapper" data-value="designs">' .
+                   '<div class="question"><b>More designs like the ones we already have</b><br>' .
+                   '<i>Fun, unique &amp; made just for the UCP plugin</i></div>' .
+                   '<span class="dashicons dashicons-yes"></span>' .
+                   '</div>';
     
-    echo '<div class="question-wrapper" data-value="drag-drop">';
-    echo '<div class="question"><b>Drag &amp; drop page designer</b><br>';
-    echo '<i>Countdown timers, progress bars, text, images - the complete package</i></div>';
-    echo '<span class="dashicons dashicons-yes"></span>';
-    echo '</div>';
+    $questions[] = '<div class="question-wrapper" data-value="drag-drop">' .
+                   '<div class="question"><b>Drag &amp; drop page designer</b><br>' .
+                   '<i>Countdown timers, progress bars, text, images - the complete package</i></div>' .
+                   '<span class="dashicons dashicons-yes"></span>' .
+                   '</div>';
     
-    echo '<div class="question-wrapper" data-value="analytics">';
-    echo '<div class="question"><b>Built-in analytics</b><br>';
-    echo '<i>No 3rd party service needed; simple &amp; fast statistics in UCP admin</i></div>';
-    echo '<span class="dashicons dashicons-yes"></span>';
-    echo '</div>';
+    $questions[] = '<div class="question-wrapper" data-value="analytics">' .
+                   '<div class="question"><b>Built-in analytics</b><br>' .
+                   '<i>No 3rd party service needed; simple &amp; fast statistics in UCP admin</i></div>' .
+                   '<span class="dashicons dashicons-yes"></span>' .
+                   '</div>';
     
-    echo '<div class="question-wrapper" data-value="leads">';
-    echo '<div class="question"><b>Optin form on construction page</b><br>';
-    echo '<i>Collect visitors\' emails &amp; add them to an autoresponder</i></div>';
-    echo '<span class="dashicons dashicons-yes"></span>';
-    echo '</div>';
+    $questions[] = '<div class="question-wrapper" data-value="leads">' .
+                   '<div class="question"><b>Optin form on construction page</b><br>' .
+                   '<i>Collect visitors\' emails &amp; add them to an autoresponder</i></div>' .
+                   '<span class="dashicons dashicons-yes"></span>' .
+                   '</div>';
     
-    echo '<div class="question-wrapper" data-value="custom">';
-    echo '<div class="question"><b>Something else? Enter the feature you need below:</b><br>';
-    echo '<input type="text" class="custom-input"></div>';
-    echo '<span class="dashicons dashicons-yes"></span>';
-    echo '</div>';
+    $questions[] = '<div class="question-wrapper" data-value="custom">' .
+                   '<div class="question"><b>Something we missed? Enter the feature you need below:</b><br>' .
+                   '<input type="text" class="custom-input"></div>' .
+                   '<span class="dashicons dashicons-yes"></span>' .
+                   '</div>';
+    
+    shuffle($questions);
+    echo implode(' ', $questions);
     
     $current_user = wp_get_current_user();
     echo '<div class="footer">';

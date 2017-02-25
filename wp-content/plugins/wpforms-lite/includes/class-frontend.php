@@ -554,7 +554,7 @@ class WPForms_Frontend {
 
 		$pages = wpforms_has_pagebreak( $form_data );
 		$d     = '';
-		$datas = apply_filters( 'wpforms_frontend_recaptcha', array( 'sitekey' => $site_key ), $form_data );
+		$datas = apply_filters( 'wpforms_frontend_recaptcha', array(), $form_data );
 
 
 		if ( $pages ) {
@@ -568,6 +568,8 @@ class WPForms_Frontend {
 			}
 
 			echo '<div class="g-recaptcha" ' . $d . '></div>';
+
+			echo '<input type="text" name="g-recaptcha-hidden" class="wpforms-recaptcha-hidden" style="position:absolute !important;clip:rect(0,0,0,0);height:1px;width:1px;border:0;overflow:hidden;padding:0;margin;" required>';
 
 			if ( !empty( wpforms()->process->errors[$form_data['id']]['recaptcha'] ) ) {
 				echo '<label id="wpforms-field_recaptcah-error" class="wpforms-error">' . esc_html( wpforms()->process->errors[$form_data['id']]['recaptcha'] ) . '</label>';
@@ -812,16 +814,17 @@ class WPForms_Frontend {
 		$site_key   = wpforms_setting( 'recaptcha-site-key' );
 		$secret_key = wpforms_setting( 'recaptcha-secret-key' );
 		if ( !empty( $site_key ) && !empty( $secret_key ) ) {
+			$reCAPTCHA_api = apply_filters( 'wpforms_frontend_recaptcha_url', 'https://www.google.com/recaptcha/api.js?onload=wpformsRecaptcha&render=explicit' );
 			wp_enqueue_script(
 				'wpforms-recaptcha',
-				'https://www.google.com/recaptcha/api.js?onload=wpformsRecaptcha&render=explicit',
+				$reCAPTCHA_api,
 				array( 'jquery' ),
 				'2.0.0',
 				true
 			);
 			$reCAPTCHA_init = 'var wpformsRecaptcha = function(){
 				jQuery(".g-recaptcha").each(function(index, el) {
-					grecaptcha.render(el, {sitekey : \'' . $site_key . '\'});
+					grecaptcha.render(el, {sitekey : \'' . $site_key . '\',callback:function(){wpforms.recaptchaCallback(el);}});
 				});
 			};';
 			wp_add_inline_script( 'wpforms-recaptcha', $reCAPTCHA_init );

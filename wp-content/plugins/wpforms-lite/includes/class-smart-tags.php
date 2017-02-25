@@ -234,7 +234,8 @@ class WPForms_Smart_Tags {
 
 			foreach( $dates[1] as $key => $date ) {
 
-				$content = str_replace( $dates[0][$key], date("$date"), $content );
+				$value   = date( $date, time() + ( get_option( 'gmt_offset' ) * 3600 ) );
+				$content = str_replace( $dates[0][$key], $value, $content );
 			}
 		}
 

@@ -938,6 +938,24 @@ function wpforms_log( $title = '', $message = '', $args = array()  ) {
 	wpforms()->logs->add( $title, $message, $parent, $parent, $meta );
 }
 
+/**
+ * Insert element into an array at a specific point a preserve the key.
+ *
+ * @since 1.3.3
+ * @param array $array
+ * @param array $values
+ * @param int $offset
+ * @return array
+ */
+function wpforms_array_insert( $array, $values, $offset ) {
+
+	return array_slice( $array, 0, $offset, true ) + $values + array_slice( $array, $offset, NULL, true );
+}
+
+/**
+ * Array replace recursive, for PHP 5.2.
+ *
+ */
 if ( ! function_exists( 'array_replace_recursive' ) ) :
 	/**
 	* PHP-agnostic version of {@link array_replace_recursive()}.

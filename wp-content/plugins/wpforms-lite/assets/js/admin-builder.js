@@ -2090,7 +2090,7 @@
 					$dest = $(this).parent().parent().find('.key-destination');
 					name  = $dest.data('name');
 					if (value) {
-						$dest.attr('name', name.replace('{source}', value.replace(/[^0-9a-z_-]/gi, '')));
+						$dest.attr('name', name.replace('{source}', value.replace(/[^0-9a-zA-Z_-]/gi, '')));
 					}
 			})
 

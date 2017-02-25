@@ -1,5 +1,5 @@
 /*
- * Under Construction 
+ * UnderConstructionPage 
  * Backend GUI pointers
  * (c) Web factory Ltd, 2015 - 2016
  */

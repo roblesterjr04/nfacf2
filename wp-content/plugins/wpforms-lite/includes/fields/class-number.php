@@ -122,6 +122,11 @@ class WPForms_Field_Number extends WPForms_Field {
 
 		$form_id = $form_data['id'];
 
+		// Some browsers allow other non-digit/decimal characters to be submitted
+		// with the num input, which then trips the is_numeric validation below.
+		// To get around this we remove all chars that are not expected.
+		$field_submit = preg_replace( '/[^0-9.]/', '', $field_submit );
+
 		// Basic required check - If field is marked as required, check for entry data
 		if ( !empty( $form_data['fields'][$field_id]['required'] ) && empty( $field_submit ) && '0' != $field_submit ) {
 			wpforms()->process->errors[$form_id][$field_id] = apply_filters( 'wpforms_required_label', __('This field is required', 'wpforms' ) );
@@ -131,6 +136,29 @@ class WPForms_Field_Number extends WPForms_Field {
 		if ( !empty( $field_submit ) && !is_numeric( $field_submit ) ) {
 			wpforms()->process->errors[$form_id][$field_id] = apply_filters( 'wpforms_valid_number_label', __('Please enter a valid number.', 'wpforms' ) );
 		}
+	}
+
+	/**
+	 * Formats and sanitizes field.
+	 *
+	 * @since 1.3.5
+	 * @param int $field_id
+	 * @param array $field_submit
+	 * @param array $form_data
+	 */
+	public function format( $field_id, $field_submit, $form_data ) {
+
+		$name  = !empty( $form_data['fields'][$field_id]['label'] ) ? sanitize_text_field( $form_data['fields'][$field_id]['label'] ) : '';
+
+		// Remove non-numerical characters
+		$value = preg_replace( '/[^0-9.]/', '', $field_submit );
+
+		wpforms()->process->fields[$field_id] = array(
+			'name'  => $name,
+			'value' => $value,
+			'id'    => absint( $field_id ),
+			'type'  => $this->type,
+		);
 	}
 }
 new WPForms_Field_Number;

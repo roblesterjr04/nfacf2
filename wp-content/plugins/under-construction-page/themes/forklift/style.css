@@ -1,5 +1,5 @@
 /*
- * Under Construction 
+ * UnderConstructionPage 
  * Forklift theme CSS
  * (c) Web factory Ltd, 2015 - 2016
  */
@@ -63,14 +63,7 @@ h1 {
 }
 
 #social a:hover i {
-  color: #000000;
-}
-
-#linkback {
-  font-size: small;
-  text-align: center;
-  opacity: 0.55;
-  margin: 10px;
+  color: #ffffff;
 }
 
 @media(max-width:767px){

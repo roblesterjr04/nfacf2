@@ -25,7 +25,7 @@ class WPForms_Field_Email extends WPForms_Field {
 
 		// Set field to default to required
 		add_filter( 'wpforms_field_new_required', array( $this, 'default_required' ), 10, 2 );
-	
+
 		// Set confirmation status to option wrapper class
 		add_filter( 'wpforms_builder_field_option_class', array( $this, 'field_option_class' ), 10, 2 );
 	}
@@ -41,80 +41,83 @@ class WPForms_Field_Email extends WPForms_Field {
 		//--------------------------------------------------------------------//
 		// Basic field options
 		//--------------------------------------------------------------------//
-		
+
 		// Options open markup
 		$this->field_option( 'basic-options', $field, array( 'markup' => 'open' ) );
-		
+
 		// Label
 		$this->field_option( 'label', $field );
-		
+
 		// Description
 		$this->field_option( 'description', $field );
-		
+
 		// Required toggle
 		$this->field_option( 'required', $field );
-		
+
 		// Confirmation toggle
-		$confirm_check = $this->field_element( 
-			'checkbox', 
-			$field, 
-			array( 
+		$confirm_check = $this->field_element(
+			'checkbox',
+			$field,
+			array(
 				'slug'    => 'confirmation',
 				'value'   => isset( $field['confirmation'] ) ? '1' : '0',
 				'desc'    => __( 'Enable Email Confirmation', 'wpforms' ),
 				'tooltip' => __( 'Check this option ask the user to provide their email address twice.', 'wpforms' ),
-			), 
+			),
 			false
 		);
 		$this->field_element( 'row', $field, array( 'slug' => 'confirmation', 'content' => $confirm_check ) );
-	
+
 		// Options close markup
 		$this->field_option( 'basic-options', $field, array( 'markup' => 'close' ) );
-		
+
 		//--------------------------------------------------------------------//
 		// Advanced field options
 		//--------------------------------------------------------------------//
-	
+
 		// Options open markup
 		$this->field_option( 'advanced-options', $field, array( 'markup' => 'open' ) );
-		
+
 		// Size
 		$this->field_option( 'size', $field );
-		
+
 		// Placeholder
 		$this->field_option( 'placeholder', $field );
 
 		// Confirmation Placeholder
 		$confirm_placehlder_label = $this->field_element(
-			'label', 
-			$field, 
-			array( 
-				'slug'    => 'confirmation_placeholder', 
-				'value'   => __( 'Confirmation Placeholder Text', 'wpforms' ), 
+			'label',
+			$field,
+			array(
+				'slug'    => 'confirmation_placeholder',
+				'value'   => __( 'Confirmation Placeholder Text', 'wpforms' ),
 				'tooltip' => __( 'Enter text for the confirmation field placeholder.', 'wpforms' )
-			), 
+			),
 			false
 		);
-		$confirm_placehlder_text = $this->field_element( 
-			'text',  
-			$field, 
-			array( 
+		$confirm_placehlder_text = $this->field_element(
+			'text',
+			$field,
+			array(
 				'slug' => 'confirmation_placeholder',
 				'value' => !empty( $field['confirmation_placeholder'] ) ? esc_attr( $field['confirmation_placeholder'] ) : '',
-			), 
+			),
 			false
 		);
 		$this->field_element( 'row', $field, array( 'slug' => 'confirmation_placeholder', 'content' => $confirm_placehlder_label . $confirm_placehlder_text ) );
-		
+
 		// Hide Label
 		$this->field_option( 'label_hide', $field );
 
 		// Hide Sub-labels
 		$this->field_option( 'sublabel_hide', $field );
-		
+
+		// Default value
+		$this->field_option( 'default_value', $field );
+
 		// Custom CSS classes
 		$this->field_option( 'css', $field );
-		
+
 		// Options close markup
 		$this->field_option( 'advanced-options', $field, array( 'markup' => 'close' ) );
 	}
@@ -150,24 +153,24 @@ class WPForms_Field_Email extends WPForms_Field {
 		$placeholder         = !empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
 		$confirm             = !empty( $field['confirmation'] ) ? 'enabled' : 'disabled';
 		$confirm_placeholder = !empty( $field['confirmation_placeholder'] ) ? esc_attr( $field['confirmation_placeholder'] ) : '';
-		
+
 		// Label
 		$this->field_preview_option( 'label', $field );
 
 		printf( '<div class="wpforms-confirm wpforms-confirm-%s">', $confirm );
-			
+
 			echo '<div class="wpforms-confirm-primary">';
 				printf( '<input type="email" placeholder="%s" class="primary-input" disabled>', $placeholder );
 				printf( '<label class="wpforms-sub-label">%s</label>', __( 'Email' , 'wpforms') );
 			echo '</div>';
-			
+
 			echo '<div class="wpforms-confirm-confirmation">';
 				printf( '<input type="email" placeholder="%s" class="secondary-input" disabled>', $confirm_placeholder );
 				printf( '<label class="wpforms-sub-label">%s</label>', __( 'Confirm Email' , 'wpforms') );
 			echo '</div>';
 
 		echo '</div>';
-		
+
 		// Description
 		$this->field_preview_option( 'description', $field );
 	}
@@ -180,7 +183,7 @@ class WPForms_Field_Email extends WPForms_Field {
 	 * @param array $form_data
 	 */
 	public function field_display( $field, $field_atts, $form_data ) {
-	
+
 		// Setup and sanitize the necessary data
 		$field                    = apply_filters( 'wpforms_email_field_display', $field, $field_atts, $form_data );
 		$field_placeholder        = !empty( $field['placeholder']) ? esc_attr( $field['placeholder'] ) : '';
@@ -188,6 +191,7 @@ class WPForms_Field_Email extends WPForms_Field {
 		$field_class              = implode( ' ', array_map( 'sanitize_html_class', $field_atts['input_class'] ) );
 		$field_id                 = implode( ' ', array_map( 'sanitize_html_class', $field_atts['input_id'] ) );
 		$field_sublabel           = !empty( $field['sublabel_hide'] ) ? 'wpforms-sublabel-hide' : '';
+		$field_value              = !empty( $field['default_value'] ) ? esc_attr( apply_filters( 'wpforms_process_smart_tags', $field['default_value'], $form_data ) ) : '';
 		$field_data               = '';
 		$confirmation             = !empty( $field['confirmation'] ) ? true : false;
 		$confirmation_placeholder = !empty( $field['confirmation_placeholder']) ? esc_attr( $field['confirmation_placeholder'] ) : '';
@@ -203,11 +207,12 @@ class WPForms_Field_Email extends WPForms_Field {
 		if ( ! $confirmation ) :
 
 			// Primary email field
-			printf( 
-				'<input type="email" name="wpforms[fields][%d]" id="%s" class="%s" value="" placeholder="%s" %s %s>',
+			printf(
+				'<input type="email" name="wpforms[fields][%d]" id="%s" class="%s" value="%s" placeholder="%s" %s %s>',
 				$field['id'],
 				$field_id,
 				$field_class,
+				$field_value,
 				$field_placeholder,
 				$field_required,
 				$field_data
@@ -225,7 +230,7 @@ class WPForms_Field_Email extends WPForms_Field {
 					$primary_class .= !empty( $field_required ) ? ' wpforms-field-required' : '';
 					$primary_class .= !empty( wpforms()->process->errors[$form_id][$field['id']]['primary'] ) ? ' wpforms-error' : '';
 
-					printf( 
+					printf(
 						'<input type="email" name="wpforms[fields][%d][primary]" id="%s" class="%s" value="" placeholder="%s" %s>',
 						$field['id'],
 						$field_id,
@@ -249,7 +254,7 @@ class WPForms_Field_Email extends WPForms_Field {
 					$confirmation_class .= !empty( $field_required ) ? ' wpforms-field-required' : '';
 					$confirmation_class .= !empty( wpforms()->process->errors[$form_id][$field['id']]['confirmation'] ) ? ' wpforms-error' : '';
 
-					printf( 
+					printf(
 						'<input type="email" name="wpforms[fields][%d][confirmation]" id="%s" class="%s" value="" placeholder="%s" data-rule-confirm-msg="%s" data-rule-confirm="#%s" %s>',
 						$field['id'],
 						"wpforms-{$form_id}-field_{$field['id']}-confirmation",

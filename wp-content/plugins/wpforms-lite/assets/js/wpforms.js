@@ -9,6 +9,9 @@
 		 */
 		init: function() {
 
+			// Set user identifier
+			WPForms.setUserIndentifier();
+
 			// Document ready
 			$(document).ready(WPForms.ready);
 
@@ -326,7 +329,17 @@
 				$page      = $form.find('.wpforms-page-'+page),
 				$submit    = $form.find('.wpforms-submit-container'),
 				$indicator = $form.find('.wpforms-page-indicator'),
-				$reCAPTCHA = $form.find('.wpforms-recaptcha-container');
+				$reCAPTCHA = $form.find('.wpforms-recaptcha-container'),
+				pageScroll = false;
+
+			// Page scroll
+			if ( window.wpforms_pageScroll === false ) {
+				pageScroll = false;
+			} else if ( !WPForms.empty( window.wpform_pageScroll ) ) {
+				pageScroll = window.wpform_pageScroll;
+			} else {
+				pageScroll = 75;
+			}
 
 			// Toggling between pages
 			if ( action == 'next' ){
@@ -359,10 +372,12 @@
 						$reCAPTCHA.show();
 						$submit.show();
 					}
-					// Scroll to top of the form
-					$('html, body').animate({
-						scrollTop: $form.offset().top-75
-					}, 1000);
+					if ( pageScroll ) {
+						// Scroll to top of the form
+						$('html, body').animate({
+							scrollTop: $form.offset().top-pageScroll
+						}, 1000);
+					}
 					$this.trigger('wpformsPageChange', [ page2, $form ] );
 				}
 			} else if ( action == 'prev' ) {
@@ -372,10 +387,12 @@
 				$form.find('.wpforms-page-'+prev).show();
 				$reCAPTCHA.hide();
 				$submit.hide();
-				// Scroll to top of the form
-				$('html, body').animate({
-					scrollTop: $form.offset().top-75
-				}, 1000);
+				if ( pageScroll ) {
+					// Scroll to top of the form
+					$('html, body').animate({
+						scrollTop: $form.offset().top-pageScroll
+					}, 1000);
+				}
 				$this.trigger('wpformsPageChange', [ page2, $form ] );
 			}
 
@@ -412,6 +429,19 @@
 		//--------------------------------------------------------------------//
 		// Other functions
 		//--------------------------------------------------------------------//
+
+		/**
+		 * Google reCAPTCHA callback.
+		 *
+		 * @since 1.3.4
+		 */
+		recaptchaCallback: function( el ) {
+
+			var $this   = $(el),
+				$hidden = $this.parent().find('.wpforms-recaptcha-hidden');
+
+			$hidden.val('1').valid();
+		},
 
 		/**
 		 * Payments: Calculate total.
@@ -604,6 +634,89 @@
 			}
 
 			return false
+		},
+
+		/**
+		 * Set cookie container user UUID.
+		 *
+		 * @since 1.3.3
+		 */
+		setUserIndentifier: function() {
+
+			if ( ! WPForms.getCookie('_wpfuuid') ) {
+
+				// Generate UUID - http://stackoverflow.com/a/873856/1489528
+				var s         = new Array(36),
+					hexDigits = '0123456789abcdef',
+					uuid;
+
+				for (var i = 0; i < 36; i++) {
+					s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+				}
+				s[14] = "4";
+				s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);
+				s[8]  = s[13] = s[18] = s[23] = '-';
+
+				uuid = s.join("");
+
+				WPForms.createCookie('_wpfuuid', uuid, 3999);
+			}
+		},
+
+		/**
+		 * Create cookie.
+		 *
+		 * @since 1.3.3
+		 */
+		createCookie: function(name, value, days) {
+
+			// If we have a days value, set it in the expiry of the cookie.
+			if ( days ) {
+				// If -1 is our value, set a session based cookie instead of a persistent cookie.
+				if ( '-1' == days ) {
+					var expires = '';
+				} else {
+					var date = new Date();
+					date.setTime(date.getTime() + (days*24*60*60*1000));
+					var expires = '; expires=' + date.toGMTString();
+				}
+			} else {
+				var expires = '; expires=Thu, 01 Jan 1970 00:00:01 GMT';
+			}
+
+			// Write the cookie.
+			document.cookie = name + '=' + value + expires + '; path=/';
+		},
+
+		/**
+		 * Retrieve cookie.
+		 *
+		 * @since 1.3.3
+		 */
+		getCookie: function(name) {
+
+			var nameEQ = name + '=',
+				ca     = document.cookie.split(';');
+
+			for ( var i = 0; i < ca.length; i++ ) {
+				var c = ca[i];
+				while ( c.charAt(0) == ' ' ) {
+					c = c.substring(1, c.length);
+				}
+				if ( c.indexOf(nameEQ) == 0 ) {
+					return c.substring(nameEQ.length, c.length);
+				}
+			}
+
+			return null;
+		},
+
+		/**
+		 * Delete cookie.
+		 */
+		removeCookie: function(name) {
+
+			WPForms.createCookie(name, '',-1);
 		}
 	}
 

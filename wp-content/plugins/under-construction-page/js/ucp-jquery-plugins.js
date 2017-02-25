@@ -1,5 +1,5 @@
 /*
- * Under Construction 
+ * UnderConstructionPage 
  * jQuery plugins
  * (c) Web factory Ltd, 2015 - 2016
  */

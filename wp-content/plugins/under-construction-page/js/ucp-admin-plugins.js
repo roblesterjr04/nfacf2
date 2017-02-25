@@ -1,5 +1,5 @@
 /*
- * Under Construction 
+ * UnderConstructionPage 
  * Backend plugins enhancement
  * (c) Web factory Ltd, 2015 - 2016
  */

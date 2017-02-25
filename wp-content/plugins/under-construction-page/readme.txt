@@ -1,9 +1,9 @@
 === Under Construction ===
 Contributors: WebFactory
-Tags: under construction page, coming soon page, maintenance, maintenance page, coming soon, maintenance mode, under construction mode, coming soon mode, site unavailable, under construction, landing page, construction, launch, launch page, offline
+Tags: under construction page, coming soon page, maintenance, maintenance page, coming soon, maintenance mode, under construction mode, coming soon mode, site unavailable, under construction, landing page, construction, launch, launch page, offline, rtl
 Requires at least: 4.0
 Tested up to: 4.7
-Stable tag: 1.45
+Stable tag: 1.70
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,7 +12,9 @@ Display an Under Construction, Maintenance Mode or Landing Page that takes 5 sec
 
 == Description ==
 
-A simple, no-nonsense plugin for all those situations when you have to hide the site behind an Under Construction page for a while. Live examples will be up soon on <a href="https://underconstructionpage.com/" rel="friend">Under Construction website</a>. Till then give us a shout on Twitter <a href="http://twitter.com/WebFactoryLtd">@WebFactoryLtd</a>.
+[youtube https://www.youtube.com/watch?v=fqqWrQENSDc]
+
+A simple, no-nonsense plugin for all those situations when you have to hide the site behind an Under Construction page for a while. Live examples will be up soon on <a href="https://underconstructionpage.com/" rel="friend">Under Construction website</a>. Till then give us a shout on Twitter <a href="http://twitter.com/WebFactoryLtd">@WebFactoryLtd</a> or check out the <a href="https://youtu.be/fqqWrQENSDc">video</a>.
 
 
 **Options**
@@ -20,11 +22,13 @@ A simple, no-nonsense plugin for all those situations when you have to hide the 
 * Under construction mode - off / on
 * End date & time - automatically disable construction mode on a set date
 * Google Analytics Tracking ID - enable tracking via Google Analytics
-* Theme - a new one is added with each update, <a href="https://wordpress.org/plugins/under-construction-page/screenshots/">see screenshots</a>
+* Theme - a new one is added with each update, <a href="https://wordpress.org/plugins/under-construction-page/screenshots/">see screenshots of available themes</a>
+* Custom CSS - adjust any part of the page to fit your needs
 * Title - page title, for SEO
 * Description - page description, for SEO
 * Headline - main headline/title
 * Content - anything you need to display, from styled text to images
+* Login Button - show a descrete link to the login form, or WP admin if you're logged in
 * Social icons/links - new ones are added with every update; let us know if we missed your favorite ones
   * Facebook
   * Twitter
@@ -35,6 +39,10 @@ A simple, no-nonsense plugin for all those situations when you have to hide the 
   * Dribbble
   * Behance
   * Instagram
+  * Email
+  * Phone
+  * Skype
+  * WhatsApp
 * Whitelisted User Roles - user roles who see the site, instead of maintenance page
 * Whitelisted Users - users who see the site, instead of maintenance page
 
@@ -66,24 +74,60 @@ Or if needed, upload manually;
 6. Forklift at Work theme
 7. Cyber Chick theme
 8. Rocket Launch theme
-9. Main settings
-10. Design settings
-11. Content settings
-12. Access settings
+9. Loader at Work theme
+10. Cyber Chick Dark theme
+11. Safe theme
+12. People at Work theme
+13. Windmill theme
+14. Main settings
+15. Design settings
+16. Content settings
+17. Access settings
 
 
 == Changelog ==
 
+= 1.70 =
+* 2017/02/22
+* new theme - Windmill
+* code improvements
+
+= 1.66 =
+* 2017/02/13
+* new theme - People at Work
+* added new social icon: WhatsApp
+
+= 1.60 =
+* 2017/02/06
+* new theme - Safe
+* added "Support" tab with FAQ and links
+* minor bug fixes
+* added 2 social icons: Skype and Phone
+* we've crossed the 40k users mark
+
+= 1.55 =
+* 2017/01/30
+* new theme - Cyber Chick Dark
+* added "Custom CSS" option
+* minor bug fixes
+* security improvements
+
+= 1.51 =
+* 2017/01/23
+* new theme - Loader
+* added "Show Login Button" option
+* added 1 social icon: Email
+
 = 1.45 =
 * 2017/01/16
-* 1 new theme - Rocket Launch
+* new theme - Rocket Launch
 * added "Site Description" SEO option
 * added 2 social icons: Behance & Instagram
 * features survey is shown to users to decide what features will be developed next
 
 = 1.40 =
 * 2017/01/03
-* 1 new theme - Cyber Chick
+* new theme - Cyber Chick
 * added "Google Analytics Tracking ID" option
 * added "Whitelisted Users" option
 * added "Show some Love" option
@@ -91,7 +135,7 @@ Or if needed, upload manually;
 
 = 1.35 =
 * 2016/12/23
-* 1 new theme - Under Construction Text
+* new theme - Under Construction Text
 * GUI enhancements
 * added "end date" option
 
@@ -99,7 +143,7 @@ Or if needed, upload manually;
 * 2016/11/29
 * we've crossed the 20k users mark & 100k downloads ;)
 * added notice on login form when Maintenance is enabled
-* 1 new theme - Forklift at Work
+* new theme - Forklift at Work
 * GUI overhaul started
 * added Dribbble social icon
 
@@ -110,12 +154,12 @@ Or if needed, upload manually;
 = 1.24 =
 * 2016/10/24
 * 3 new social icons
-* 1 new theme
+* new theme
 
 = 1.22 =
 * 2016/10/10
 * minor fixes
-* 1 new theme
+* new theme
 
 = 1.20 =
 * 2016/09/27

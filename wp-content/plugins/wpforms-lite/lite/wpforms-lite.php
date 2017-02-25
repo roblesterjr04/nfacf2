@@ -232,9 +232,15 @@ class WPForms_Lite {
 			return 'https://wpforms.com/lite-upgrade/?utm_source=WordPress&amp;utm_medium=link&amp;utm_campaign=liteplugin';
 		}
 
+		// Whether we have a specific redirect URL to use
+		$shareasale_redirect = apply_filters( 'wpforms_shareasale_redirect', get_option( 'wpforms_shareasale_redirect', '' ) );
+
+		// Build final URL
+		$shareasale_url = sprintf( 'http://www.shareasale.com/r.cfm?B=837827&U=%s&M=64312&urllink=%s', $shareasale_id, $shareasale_redirect );
+
 		// If here, we have a ShareASale ID
 		// Return ShareASale URL with redirect.
-		return 'http://www.shareasale.com/r.cfm?B=837827&U=' . $shareasale_id . '&M=64312&urllink=';
+		return esc_url( $shareasale_url );
 	}
 
 	/**
@@ -528,6 +534,11 @@ class WPForms_Lite {
 				'name' => 'Custom Captcha',
 				'desc' => 'WPForms custom captcha addon allows you to define custom questions or use random math questions as captcha to combat spam form submissions.',
 				'icon' => 'addon-icon-captcha.png'
+			),
+			array(
+				'name' => 'Form Abandonment',
+				'desc' => 'Unlock more leads by capturing partial entries from your forms. Easily follow up with interested leads and turn them into loyal customers.',
+				'icon' => 'addon-icon-form-abandonment.png'
 			),
 			array(
 				'name' => 'Geolocation',

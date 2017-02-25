@@ -1,0 +1,37 @@
+/*
+ *  File:         pluginpage.css
+ *   Description:  CSS descriptions for mylogin_logout 
+ *  Author:       Nagarjun Sonti
+ *  Created:      Tue Sep 02 06:47:22 BST 2014
+ *  Language:     CSS
+ *  Project:      mylogin_logout
+ *
+ *  Copyright 2014 Nagarjun Sonti. All Rights Reserved.
+ *
+ * ***************************************************************************
+ */
+#my_div{
+	border: 1px solid #ccc; padding-left: 14px;padding-bottom: 15px;
+	-webkit-box-shadow: 0px 3px 5px 0px rgba(50, 50, 50, 0.75);
+	-moz-box-shadow:    0px 3px 5px 0px rgba(50, 50, 50, 0.75);
+	box-shadow:0px 3px 5px 0px rgba(50, 50, 50, 0.75);
+	width: 800px;
+}
+.my-head{
+	background-color: rgb(204, 204, 204);
+	color: #000;
+	font-size: 15px;
+	padding: 6px 6px 6px 7px;
+	margin-right: 10px;
+width:770px;
+}
+.divlink{
+	margin-right: 29px; display: inline;
+}
+.divcontent{
+	height: 50px;
+    padding: 10px;
+}
+.myselect{
+width:300px;
+}

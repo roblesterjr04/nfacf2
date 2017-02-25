@@ -1,6 +1,6 @@
 <?php
 /*
- * Under Construction 
+ * UnderConstructionPage 
  * Things Went Dark theme
  * (c) Web factory Ltd, 2015 - 2016
  */
@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>[title]</title>
     <meta name="description" content="[description]" />
-    <meta name="generator" content="Under Construction plugin for WordPress">
+    <meta name="generator" content="[generator]">
     <link rel="stylesheet" href="[theme-url-common]css/bootstrap.min.css?v=[version]" type="text/css">
     <link rel="stylesheet" href="[theme-url]style.css?v=[version]" type="text/css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,900">
@@ -31,6 +31,7 @@ if (!defined('ABSPATH')) {
     <div id="hero-image">
       <img src="[theme-url]dark.jpg" alt="Mad Designer at work in the dark" title="Mad Designer at work in the dark">
     </div>
+	
     <div class="container">
     
       <div class="row">

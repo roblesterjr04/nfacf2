@@ -1,5 +1,5 @@
 /*
- * Under Construction 
+ * UnderConstructionPage 
  * Main backend JS
  * (c) Web factory Ltd, 2015 - 2016
  */
@@ -18,6 +18,16 @@ jQuery(document).ready(function($) {
   
   // init select2
   $('#whitelisted_users').select2({ 'placeholder': ucp.whitelisted_users_placeholder});
+  
+  // autosize textareas
+  $.each($('textarea[data-autoresize]'), function() {
+    var offset = this.offsetHeight - this.clientHeight;
+    
+    var resizeTextarea = function(el) {
+        $(el).css('height', 'auto').css('height', el.scrollHeight + offset + 2);
+    };
+    $(this).on('keyup input click', function() { resizeTextarea(this); }).removeAttr('data-autoresize');
+  });
   
   // maybe init survey dialog
   $('#features-survey-dialog').dialog({'dialogClass': 'wp-dialog ucp-dialog ucp-survey-dialog',

@@ -52,16 +52,16 @@ class WPForms_Field_Select extends WPForms_Field {
 		//--------------------------------------------------------------------//
 		// Basic field options
 		//--------------------------------------------------------------------//
-		
+
 		// Options open markup
 		$this->field_option( 'basic-options', $field, array( 'markup' => 'open' ) );
-		
+
 		// Label
 		$this->field_option( 'label', $field );
-	
+
 		// Choices
-		$this->field_option( 'choices', $field );	
-		
+		$this->field_option( 'choices', $field );
+
 		// Description
 		$this->field_option( 'description', $field );
 
@@ -70,11 +70,11 @@ class WPForms_Field_Select extends WPForms_Field {
 
 		// Options close markup
 		$this->field_option( 'basic-options', $field, array( 'markup' => 'close' ) );
-		
+
 		//--------------------------------------------------------------------//
 		// Advanced field options
 		//--------------------------------------------------------------------//
-	
+
 		// Options open markup
 		$this->field_option( 'advanced-options', $field, array( 'markup' => 'open' ) );
 
@@ -123,22 +123,22 @@ class WPForms_Field_Select extends WPForms_Field {
 
 		// Field select element
 		echo '<select class="primary-input" disabled>';
-			
+
 			// Optional placeholder
 			if ( !empty( $placeholder ) ) {
 				printf( '<option value="" class="placeholder">%s</option>', $placeholder );
 			}
 
-			// Check to see if this field is configured for Dynamic Choices, 
+			// Check to see if this field is configured for Dynamic Choices,
 			// either auto populating from a post type or a taxonomy.
 			if ( 'post_type' == $dynamic && !empty( $field['dynamic_post_type'] ) ) {
-			
+
 				// Post type dynamic populating
 				$source = $field['dynamic_post_type'];
-				$args   = array( 
-					'post_type'      => $source, 
-					'posts_per_page' => 1, 
-					'orderby'        => 'title', 
+				$args   = array(
+					'post_type'      => $source,
+					'posts_per_page' => 1,
+					'orderby'        => 'title',
 					'order'          => 'ASC' ,
 				);
 				$posts  = get_posts( apply_filters( 'wpforms_dynamic_choice_post_type_args', $args, $field, $this->form_id ) );
@@ -152,11 +152,11 @@ class WPForms_Field_Select extends WPForms_Field {
 
 				// Taxonomy dynamic populating
 				$source = $field['dynamic_taxonomy'];
-				$args   = array( 
-					'taxonomy'   => $source, 
-					'hide_empty' => false, 
+				$args   = array(
+					'taxonomy'   => $source,
+					'hide_empty' => false,
 					'number'     => 1
-				); 
+				);
 				$terms 	= get_terms( apply_filters( 'wpforms_dynamic_choice_taxonomy_args', $args, $field, $this->form_id ) );
 				$values = array();
 
@@ -169,7 +169,7 @@ class WPForms_Field_Select extends WPForms_Field {
 			if ( empty( $values ) ) {
 				$values = array( 'label' => __( '(empty)', 'wpforms' ) );
 			}
-			
+
 			// Build the select options (even though user can only see 1st option)
 			foreach ( $values as $key => $value ) {
 
@@ -178,7 +178,7 @@ class WPForms_Field_Select extends WPForms_Field {
 
 				printf( '<option %s>%s</option>', $selected, $value['label'] );
 			}
-		
+
 		echo '</select>';
 
 		// Description
@@ -230,26 +230,26 @@ class WPForms_Field_Select extends WPForms_Field {
 
 			// Optional placeholder
 			if ( !empty( $field_placeholder ) ) {
-				printf('<option value="" class="placeholder" disabled %s>%s</option>', selected( false, $has_default, true ), $field_placeholder );
+				printf('<option value="" class="placeholder" disabled %s>%s</option>', selected( false, $has_default, false ), $field_placeholder );
 			}
 
-			// Check to see if this field is configured for Dynamic Choices, 
+			// Check to see if this field is configured for Dynamic Choices,
 			// either auto populating from a post type or a taxonomy.
 			if ( 'post_type' == $dynamic && !empty( $field['dynamic_post_type'] ) ) {
-			
+
 				// Post type dynamic populating
 				$source = $field['dynamic_post_type'];
-				$args   = array( 
-					'post_type'      => $source, 
-					'posts_per_page' => -1, 
-					'orderby'        => 'title', 
+				$args   = array(
+					'post_type'      => $source,
+					'posts_per_page' => -1,
+					'orderby'        => 'title',
 					'order'          => 'ASC' ,
 				);
 				$posts   = get_posts( apply_filters( 'wpforms_dynamic_choice_post_type_args', $args, $field, $form_data['id'] ) );
 				$choices = array();
 
 				foreach ( $posts as $post ) {
-					$choices[] = array( 
+					$choices[] = array(
 						'value' => $post->ID,
 						'label' => $post->post_title
 					);
@@ -261,15 +261,15 @@ class WPForms_Field_Select extends WPForms_Field {
 
 				// Taxonomy dynamic populating
 				$source = $field['dynamic_taxonomy'];
-				$args   = array( 
-					'taxonomy'   => $source, 
-					'hide_empty' => false, 
-				); 
+				$args   = array(
+					'taxonomy'   => $source,
+					'hide_empty' => false,
+				);
 				$terms 	 = get_terms( apply_filters( 'wpforms_dynamic_choice_taxonomy_args', $args, $field, $form_data['id'] ) );
 				$choices = array();
-				
+
 				foreach ( $terms as $term ) {
-					$choices[] = array( 
+					$choices[] = array(
 						'value' => $term->term_id,
 						'label' => $term->name
 					);
@@ -280,10 +280,10 @@ class WPForms_Field_Select extends WPForms_Field {
 
 			// Build the select options
 			foreach ( $choices as $key => $choice ) {
-				
+
 				$selected = isset( $choice['default'] ) && empty( $field_placeholder ) ? '1' : '0' ;
 				$val      = isset( $field['show_values'] ) ? esc_attr( $choice['value'] ) : esc_attr( $choice['label'] );
-				
+
 				printf( '<option value="%s" %s>%s</option>', $val, selected( '1', $selected, false ), $choice['label'] );
 			}
 
@@ -337,7 +337,7 @@ class WPForms_Field_Select extends WPForms_Field {
 			if ( ! is_wp_error( $term ) && !empty( $term ) ) {
 				$data['value'] = esc_html( $term->name );
 			}
-			
+
 		} else {
 
 			// Normal processing, dynamic population is off
@@ -345,7 +345,7 @@ class WPForms_Field_Select extends WPForms_Field {
 			// If show_values is true, that means values posted are the raw values
 			// and not the labels. So we need to get the label values.
 			if ( !empty( $field['show_values'] ) && '1' == $field['show_values'] ) {
-				
+
 				foreach ( $field['choices'] as $choice ) {
 					if ( $choice['value'] === $field_submit ) {
 						$value = $choice['label'];
@@ -359,7 +359,7 @@ class WPForms_Field_Select extends WPForms_Field {
 				$data['value'] = $value_raw;
 			}
 		}
-		
+
 		// Push field details to be saved
 		wpforms()->process->fields[$field_id] = $data;
 	}

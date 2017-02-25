@@ -91,7 +91,7 @@ class WPForms_Builder {
 
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueues' ) );
 			add_action( 'wpforms_admin_page',    array( $this, 'output'   ) );
-			
+
 			// Provide hook for add-ons
 			do_action( 'wpforms_builder_init', $this->view );
 
@@ -147,111 +147,122 @@ class WPForms_Builder {
 	 */
 	public function enqueues() {
 
+		// Remove conflicting scripts
+		wp_deregister_script( 'serialize-object' );
+
 		do_action( 'wpforms_builder_enqueues_before', $this->view );
 
 		// CSS
-		wp_enqueue_style( 
-			'wpforms-font-awesome', 
-			WPFORMS_PLUGIN_URL . 'assets/css/font-awesome.min.css', 
-			null, 
+		wp_enqueue_style(
+			'wpforms-font-awesome',
+			WPFORMS_PLUGIN_URL . 'assets/css/font-awesome.min.css',
+			null,
 			'4.4.0'
 		);
 
-		wp_enqueue_style( 
-			'tooltipster', 
-			WPFORMS_PLUGIN_URL . 'assets/css/tooltipster.css', 
-			null, 
+		wp_enqueue_style(
+			'tooltipster',
+			WPFORMS_PLUGIN_URL . 'assets/css/tooltipster.css',
+			null,
 			'3.3.0'
 		);
 
-		wp_enqueue_style( 
-			'jquery-confirm', 
-			WPFORMS_PLUGIN_URL . 'assets/css/jquery-confirm.min.css', 
-			null, 
+		wp_enqueue_style(
+			'jquery-confirm',
+			WPFORMS_PLUGIN_URL . 'assets/css/jquery-confirm.min.css',
+			null,
 			'2.0.0'
 		);
 
-		wp_enqueue_style( 
-			'minicolors', 
-			WPFORMS_PLUGIN_URL . 'assets/css/jquery.minicolors.css', 
-			null, 
+		wp_enqueue_style(
+			'minicolors',
+			WPFORMS_PLUGIN_URL . 'assets/css/jquery.minicolors.css',
+			null,
 			'2.2.3'
 		);
 
-		wp_enqueue_style( 
-			'wpforms-builder', 
-			WPFORMS_PLUGIN_URL . 'assets/css/admin-builder.css', 
-			null, 
+		wp_enqueue_style(
+			'wpforms-builder',
+			WPFORMS_PLUGIN_URL . 'assets/css/admin-builder.css',
+			null,
 			WPFORMS_VERSION
 		);
 
 		// JS
-		
+
 		wp_enqueue_media();
 		wp_enqueue_script( 'jquery-ui-sortable' );
 		wp_enqueue_script( 'jquery-ui-draggable' );
 
-		wp_enqueue_script( 
-			'serialize-object', 
-			WPFORMS_PLUGIN_URL . 'assets/js/jquery.serialize-object.min.js', 
-			array( 'jquery' ), 
-			'2.5.0', 
+		wp_enqueue_script(
+			'serialize-object',
+			WPFORMS_PLUGIN_URL . 'assets/js/jquery.serialize-object.min.js',
+			array( 'jquery' ),
+			'2.5.0',
 			false
 		);
 
-		wp_enqueue_script( 
-			'tooltipster', 
-			WPFORMS_PLUGIN_URL . 'assets/js/jquery.tooltipster.min.js', 
-			array( 'jquery' ), 
-			'3.3.0', 
+		wp_enqueue_script(
+			'tooltipster',
+			WPFORMS_PLUGIN_URL . 'assets/js/jquery.tooltipster.min.js',
+			array( 'jquery' ),
+			'3.3.0',
 			false
 		);
 
-		wp_enqueue_script( 
-			'jquery-confirm', 
-			WPFORMS_PLUGIN_URL . 'assets/js/jquery.jquery-confirm.min.js', 
-			array(), 
-			'2.0.0', 
+		wp_enqueue_script(
+			'jquery-confirm',
+			WPFORMS_PLUGIN_URL . 'assets/js/jquery.jquery-confirm.min.js',
+			array(),
+			'2.0.0',
 			false
 		);
 
-		wp_enqueue_script( 
-			'matchheight', 
-			WPFORMS_PLUGIN_URL . 'assets/js/jquery.matchHeight-min.js', 
-			array( 'jquery' ), 
-			'0.7.0', 
+		wp_enqueue_script(
+			'matchheight',
+			WPFORMS_PLUGIN_URL . 'assets/js/jquery.matchHeight-min.js',
+			array( 'jquery' ),
+			'0.7.0',
 			false
 		);
 
-		wp_enqueue_script( 
-			'insert-at-caret', 
-			WPFORMS_PLUGIN_URL . 'assets/js/jquery.insert-at-caret.min.js', 
-			array( 'jquery' ), 
-			'1.1.4', 
+		wp_enqueue_script(
+			'insert-at-caret',
+			WPFORMS_PLUGIN_URL . 'assets/js/jquery.insert-at-caret.min.js',
+			array( 'jquery' ),
+			'1.1.4',
 			false
 		);
 
-		wp_enqueue_script( 
-			'minicolors', 
-			WPFORMS_PLUGIN_URL . 'assets/js/jquery.minicolors.min.js', 
-			array( 'jquery' ), 
-			'2.2.3', 
+		wp_enqueue_script(
+			'minicolors',
+			WPFORMS_PLUGIN_URL . 'assets/js/jquery.minicolors.min.js',
+			array( 'jquery' ),
+			'2.2.3',
 			false
 		);
 
-		wp_enqueue_script( 
-			'wpforms-utils', 
-			WPFORMS_PLUGIN_URL . 'assets/js/admin-utils.js', 
-			array( 'jquery', 'serialize-object' ), 
-			WPFORMS_VERSION, 
+		wp_enqueue_script(
+			'conditionals',
+			WPFORMS_PLUGIN_URL . 'assets/js/jquery.conditionals.min.js',
+			array( 'jquery' ),
+			'1.0.0',
 			false
 		);
 
-		wp_enqueue_script( 
-			'wpforms-builder', 
-			WPFORMS_PLUGIN_URL . 'assets/js/admin-builder.js', 
-			array( 'jquery', 'serialize-object', 'tooltipster' ), 
-			WPFORMS_VERSION, 
+		wp_enqueue_script(
+			'wpforms-utils',
+			WPFORMS_PLUGIN_URL . 'assets/js/admin-utils.js',
+			array( 'jquery', 'serialize-object' ),
+			WPFORMS_VERSION,
+			false
+		);
+
+		wp_enqueue_script(
+			'wpforms-builder',
+			WPFORMS_PLUGIN_URL . 'assets/js/admin-builder.js',
+			array( 'jquery', 'serialize-object', 'tooltipster' ),
+			WPFORMS_VERSION,
 			false
 		);
 
@@ -320,7 +331,7 @@ class WPForms_Builder {
 			'wpforms_builder',
 			$strings
 		);
-	
+
 		// Hook for add-ons
 		do_action( 'wpforms_builder_enqueues', $this->view );
 	}
@@ -331,7 +342,7 @@ class WPForms_Builder {
 	 * @since 1.0.0
 	 */
 	public function output() {
-		
+
 		$form_id   = $this->form ? absint( $this->form->ID ): '';
 		$form_data = $this->form ? wpforms_decode( $this->form->post_content ) : false;
 		?>
@@ -340,9 +351,9 @@ class WPForms_Builder {
 			<div id="wpforms-builder-overlay">
 
 				<div class="wpforms-builder-overlay-content">
-					
+
 					<i class="fa fa-cog fa-spin"></i>
-					
+
 					<span class="msg"><?php _e( 'Loading', 'wpforms'); ?></span>
 				</div>
 
@@ -357,13 +368,13 @@ class WPForms_Builder {
 				<div class="wpforms-toolbar">
 
 					<div class="wpforms-left">
-						
+
 						<img src="<?php echo WPFORMS_PLUGIN_URL; ?>/assets/images/logo-builder.png" alt="Sullie WPForms mascot">
 
 					</div>
 
 					<div class="wpforms-center">
-						
+
 						<?php if ( $this->form ) : ?>
 
 							<?php _e( 'Now editing', 'wpforms' ); ?> <span class="wpforms-center-form-name wpforms-form-name"><?php echo esc_html( $this->form->post_title ); ?></span>
@@ -373,21 +384,21 @@ class WPForms_Builder {
 					</div>
 
 					<div class="wpforms-right">
-						
+
 						<?php if ( $this->form ) : ?>
 
 						<!--<a href="<?php echo esc_url( wpforms()->preview->form_preview_url( $form_id ) ); ?>" id="wpforms-preview" title="<?php _e( 'Preview Form', 'wpforms' ); ?>">
-							<i class="fa fa-eye"></i> 
+							<i class="fa fa-eye"></i>
 							<span class="text"><?php _e( 'Preview', 'wpforms' ); ?></span>
 						</a>-->
-						
+
 						<a href="#" id="wpforms-embed" title="<?php _e( 'Embed Form', 'wpforms' ); ?>">
-							<i class="fa fa-code"></i> 
+							<i class="fa fa-code"></i>
 							<span class="text"><?php _e( 'Embed', 'wpforms' ); ?></span>
 						</a>
-						
+
 						<a href="#" id="wpforms-save" title="<?php _e( 'Save Form', 'wpforms' ); ?>">
-							<i class="fa fa-check"></i> 
+							<i class="fa fa-check"></i>
 							<span class="text"><?php _e( 'Save', 'wpforms' ); ?></span>
 						</a>
 
@@ -403,13 +414,13 @@ class WPForms_Builder {
 
 				<!-- Panel toggle buttons -->
 				<div class="wpforms-panels-toggle" id="wpforms-panels-toggle">
-					
+
 					<?php do_action( 'wpforms_builder_panel_buttons', $this->form, $this->view ); ?>
 
 				</div>
 
 				<div class="wpforms-panels">
-					
+
 					<?php do_action( 'wpforms_builder_panels', $this->form, $this->view ); ?>
 
 				</div>

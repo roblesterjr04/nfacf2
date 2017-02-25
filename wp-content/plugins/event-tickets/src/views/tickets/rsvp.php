@@ -6,20 +6,21 @@
  *
  *     [your-theme]/tribe-events/tickets/rsvp.php
  *
- * @version 4.3.5
+ * @version 4.4.3
  *
  * @var bool $must_login
  */
 
 $is_there_any_product         = false;
 $is_there_any_product_to_sell = false;
+$are_products_available       = false;
 
 ob_start();
 $messages = Tribe__Tickets__RSVP::get_instance()->get_messages();
 $messages_class = $messages ? 'tribe-rsvp-message-display' : '';
 $now = current_time( 'timestamp' );
 ?>
-<form action="" class="cart <?php echo esc_attr( $messages_class ); ?>" method="post" enctype='multipart/form-data'>
+<form action="" class="tribe-tickets-rsvp cart <?php echo esc_attr( $messages_class ); ?>" method="post" enctype='multipart/form-data'>
 	<h2 class="tribe-events-tickets-title"><?php echo esc_html_x( 'RSVP', 'form heading', 'event-tickets' ) ?></h2>
 	<div class="tribe-rsvp-messages">
 		<?php
@@ -51,6 +52,10 @@ $now = current_time( 'timestamp' );
 
 			$is_there_any_product = true;
 			$is_there_any_product_to_sell = $ticket->is_in_stock();
+
+			if ( $is_there_any_product_to_sell ) {
+				$are_products_available = true;
+			}
 		?>
 		<tr>
 			<td class="tribe-ticket quantity" data-product-id="<?php echo esc_attr( $ticket->ID ); ?>">
@@ -87,7 +92,7 @@ $now = current_time( 'timestamp' );
 		}
 		?>
 
-		<?php if ( $is_there_any_product_to_sell ): ?>
+		<?php if ( $are_products_available ) : ?>
 			<tr class="tribe-tickets-meta-row">
 				<td colspan="4" class="tribe-tickets-attendees">
 					<header><?php esc_html_e( 'Send RSVP confirmation to:', 'event-tickets' ); ?></header>

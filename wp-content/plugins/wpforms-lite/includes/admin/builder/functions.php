@@ -68,10 +68,10 @@ function wpforms_panel_field( $option, $panel, $field, $form_data, $label, $args
 		// Text input
 		case 'text':
 			$type   = !empty( $args['type'] ) ? esc_attr( $args['type'] ) : 'text';
-			$output = sprintf( 
-				'<input type="%s" id="wpforms-panel-field-%s-%s" name="%s" value="%s" placeholder="%s" class="%s" %s>', 
+			$output = sprintf(
+				'<input type="%s" id="wpforms-panel-field-%s-%s" name="%s" value="%s" placeholder="%s" class="%s" %s>',
 				$type,
-				sanitize_html_class( $panel_id ), 
+				sanitize_html_class( $panel_id ),
 				sanitize_html_class( $field ),
 				$field_name,
 				esc_attr( $value ),
@@ -84,9 +84,9 @@ function wpforms_panel_field( $option, $panel, $field, $form_data, $label, $args
 		// Textarea
 		case 'textarea':
 			$rows   = !empty( $args['rows'] ) ? (int) $args['rows'] : '3';
-			$output = sprintf( 
+			$output = sprintf(
 				'<textarea id="wpforms-panel-field-%s-%s" name="%s" rows="%d" placeholder="%s" class="%s" %s>%s</textarea>',
-				sanitize_html_class( $panel_id ), 
+				sanitize_html_class( $panel_id ),
 				sanitize_html_class( $field ),
 				$field_name,
 				$rows,
@@ -115,18 +115,18 @@ function wpforms_panel_field( $option, $panel, $field, $form_data, $label, $args
 		// Checkbox
 		case 'checkbox':
 			$checked = checked( '1', $value, false );
-			$output  = sprintf( 
+			$output  = sprintf(
 				'<input type="checkbox" id="wpforms-panel-field-%s-%s" name="%s" value="1" class="%s" %s %s>',
-				sanitize_html_class( $panel_id ), 
+				sanitize_html_class( $panel_id ),
 				sanitize_html_class( $field ),
 				$field_name,
 				$input_class,
 				$checked,
 				$data_attr
 			);
-			$output .= sprintf( 
+			$output .= sprintf(
 				'<label for="wpforms-panel-field-%s-%s" class="inline">%s',
-				sanitize_html_class( $panel_id ), 
+				sanitize_html_class( $panel_id ),
 				sanitize_html_class( $field ),
 				$label
 			);
@@ -134,6 +134,42 @@ function wpforms_panel_field( $option, $panel, $field, $form_data, $label, $args
 				$output .=  sprintf( ' <i class="fa fa-question-circle wpforms-help-tooltip" title="%s"></i>', esc_attr( $args['tooltip'] ) );
 			}
 			$output .= '</label>';
+			break;
+
+		// Radio
+		case 'radio':
+			$options = $args['options'];
+			$x       = 1;
+			$output  = '';
+			foreach ( $options as $key => $item ) {
+				if ( empty( $item['label'] ) ) {
+					continue;
+				}
+				$checked = checked( $key, $value, false );
+				$output .= sprintf(
+					'<span class="row"><input type="radio" id="wpforms-panel-field-%s-%s-%d" name="%s" value="%s" class="%s" %s %s>',
+					sanitize_html_class( $panel_id ),
+					sanitize_html_class( $field ),
+					$x,
+					$field_name,
+					$key,
+					$input_class,
+					$checked,
+					$data_attr
+				);
+				$output .= sprintf(
+						'<label for="wpforms-panel-field-%s-%s-%d" class="inline">%s',
+						sanitize_html_class( $panel_id ),
+						sanitize_html_class( $field ),
+						$x,
+						$item['label']
+					);
+					if ( !empty( $item['tooltip'] ) ) {
+						$output .=  sprintf( ' <i class="fa fa-question-circle wpforms-help-tooltip" title="%s"></i>', esc_attr( $item['tooltip'] ) );
+					}
+				$output .= '</label></span>';
+				$x++;
+			}
 			break;
 
 		// Select
@@ -159,9 +195,9 @@ function wpforms_panel_field( $option, $panel, $field, $form_data, $label, $args
 				$options = $args['options'];
 			}
 
-			$output  = sprintf( 
+			$output  = sprintf(
 				'<select id="wpforms-panel-field-%s-%s" name="%s" class="%s" %s>',
-				sanitize_html_class( $panel_id ), 
+				sanitize_html_class( $panel_id ),
 				sanitize_html_class( $field ),
 				$field_name,
 				$input_class,
@@ -172,8 +208,8 @@ function wpforms_panel_field( $option, $panel, $field, $form_data, $label, $args
 					$output .= '<option value="">' . $placeholder . '</option>';
 				}
 
-				foreach ( $options as $key => $option ) {
-					$output .= sprintf( '<option value="%s" %s>%s</option>', esc_attr( $key ), selected( $key, $value, false ), $option );
+				foreach ( $options as $key => $item ) {
+					$output .= sprintf( '<option value="%s" %s>%s</option>', esc_attr( $key ), selected( $key, $value, false ), $item );
 				}
 
 			$output .= '</select>';
@@ -181,18 +217,18 @@ function wpforms_panel_field( $option, $panel, $field, $form_data, $label, $args
 	}
 
 	// Put the pieces together....
-	$field_open = sprintf( 
-		'<div id="wpforms-panel-field-%s-%s-wrap" class="wpforms-panel-field %s %s">', 
-		sanitize_html_class( $panel_id ), 
+	$field_open = sprintf(
+		'<div id="wpforms-panel-field-%s-%s-wrap" class="wpforms-panel-field %s %s">',
+		sanitize_html_class( $panel_id ),
 		sanitize_html_class( $field ),
 		$class,
 		'wpforms-panel-field-' . sanitize_html_class( $option )
 	);
 	$field_open .= !empty( $args['before'] ) ? $args['before'] : '';
-	if ( 'checkbox' != $option & !empty( $label ) ) {
-		$field_label = sprintf( 
+	if ( !in_array( $option, array( 'checkbox' ) ) && !empty( $label ) ) {
+		$field_label = sprintf(
 			'<label for="wpforms-panel-field-%s-%s">%s',
-			sanitize_html_class( $panel_id ), 
+			sanitize_html_class( $panel_id ),
 			sanitize_html_class( $field ),
 			$label
 		);
@@ -203,7 +239,7 @@ function wpforms_panel_field( $option, $panel, $field, $form_data, $label, $args
 			$field_label .= $args['after_tooltip'];
 		}
 		if ( !empty( $args['smarttags'] ) ) {
-	
+
 			$type   = !empty( $args['smarttags']['type'] ) ? esc_attr( $args['smarttags']['type'] ) : 'fields';
 			$fields = !empty( $args['smarttags']['fields'] ) ? esc_attr( $args['smarttags']['fields'] ) : '';
 

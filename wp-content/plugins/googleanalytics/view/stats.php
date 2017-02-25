@@ -1,4 +1,5 @@
 <div class="wrap ga-wrap" id="ga-stats-container">
+	<?php if ( ! empty( $chart ) ) : ?>
     <div class="ga-panel ga-panel-default">
         <div class="ga-panel-heading"><strong><?php _e( "Pageviews - Last 7 days vs previous 7 days" ) ?></strong></div>
         <div class="ga-panel-body ga-chart">
@@ -8,13 +9,14 @@
             </div>
         </div>
     </div>
+	<?php endif; ?>
 
+	<?php if ( ! empty( $boxes ) ) : ?>
     <div class="ga-panel ga-panel-default">
         <div class="ga-panel-heading"><strong><?php _e( "Comparison - Last 7 days vs previous 7 days" ) ?></strong>
         </div>
         <div class="ga-panel-body">
             <div class="ga-row">
-				<?php if ( ! empty( $boxes ) ) : ?>
 					<?php foreach ( $boxes as $box ) : ?>
                         <div class="ga-box">
                             <div class="ga-panel ga-panel-default">
@@ -27,10 +29,11 @@
                             </div>
                         </div>
 					<?php endforeach; ?>
-				<?php endif; ?>
             </div>
         </div>
     </div>
+	<?php endif; ?>
+
 	<?php if ( ! empty( $sources ) ) : ?>
         <div class="ga-panel ga-panel-default">
             <div class="ga-panel-heading"><strong><?php _e( "Top 5 Traffic Sources for the past 7 days" ) ?></strong>
