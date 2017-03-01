@@ -17,6 +17,9 @@ use \DrewM\MailChimp\MailChimp;
 class NF_Utilities {
 	
 	private $MailChimp;
+	private $vendor_amount = 115;
+	private $food_amount = 150;
+	private $non_profit_amount = 65;
 	 
 	public function __construct() {
 	 
@@ -26,6 +29,8 @@ class NF_Utilities {
 		add_action('user_register', array($this, 'user_register'), 10, 1);
 		
 		add_shortcode('nf_payment_button', array($this, 'payment_button'));
+		add_shortcode( 'nf_price', array($this, 'vendor_price'));
+		add_shortcode( 'nf_food', array($this, 'food_price'));
 		
 		add_filter('wp_nav_menu_objects', array($this, 'menu_login'), 10, 2);
 		
@@ -54,15 +59,15 @@ class NF_Utilities {
 	
 	public function payment_button( $args = [], $content = '') {
 		
-		$amount = 115;
+		$amount = $this->vendor_amount;
 		
 		$user = get_current_user_id();
 		$vendor_type = get_user_meta($user, 'vendor_type', true);
 		$existing_permit = get_user_meta($user, 'existing_permit', true);
 		$permit_approved = get_user_meta($user, 'existing_permit_approved', true);
 		
-		if ($vendor_type == 'Food Vendor') $amount = '150';
-		if ($vendor_type == 'Non Profit') $amount = '65';
+		if ($vendor_type == 'Food Vendor') $amount = $this->food_amount;
+		if ($vendor_type == 'Non Profit') $amount = $this->non_profit_amount;
  				
 		$logo = isset($args['logo']) ? $args['logo'] : plugin_dir_url( __FILE__ ) . "logo.jpg";
 		
@@ -78,6 +83,14 @@ class NF_Utilities {
 		
 	}
 	
+	function vendor_price($args, $content = '') {
+		return '$' . money_format('%i', $this->vendor_amount);
+	}
+	
+	function food_price($args, $content = '') {
+		return '$' . money_format('%i', $this->food_amount);
+	}
+		
 	public function user_register( $user_id ) {
 		
 		if (isset($_POST['user_email'])) {
