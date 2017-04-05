@@ -11,6 +11,7 @@
  * Domain Path: languages
  */
 require_once('MailChimp.php');
+require_once( __DIR__ . '/stripe-php/init.php');
 
 use \DrewM\MailChimp\MailChimp;
  
@@ -34,7 +35,9 @@ class NF_Utilities {
 		
 		add_filter('wp_nav_menu_objects', array($this, 'menu_login'), 10, 2);
 		
-		$this->MailChimp = new MailChimp(get_option('mailchimp_key'));
+		add_action('wp_ajax_nopriv_arts_fair_charge', array($this, 'update_subscriber'));
+		
+		$this->MailChimp = new MailChimp('98f888ec715f151b8a63d086f441c8bf-us13');
 	 
 	}
 	
@@ -77,7 +80,7 @@ class NF_Utilities {
 		
 		if ($existing_permit && $permit_approved) $amount -= 25;
 		
-		$code = '<h4>Your price will be $'.money_format('%i', $amount).'</h4>[accept_stripe_payment email="'.$email.'" name="Art Fair Registration for '.$name.'" price="'.$amount.'" item_logo="'.$logo.'"]';
+		$code = '<h4>Your price will be $'.money_format('%i', $amount).'</h4>[accept_stripe_payment email="'.$email.'" name="Fair Registration" price="'.$amount.'" item_logo="'.$logo.'"]';
 		
 		return do_shortcode($code);
 		
@@ -94,7 +97,7 @@ class NF_Utilities {
 	public function user_register( $user_id ) {
 		
 		if (isset($_POST['user_email'])) {
-			$this->subscribe($_POST['user_email']);
+			$this->subscribe($_POST['user_email'], $_POST['first_name'], $_POST['last_name']);
 		}
 		
 	}
@@ -172,18 +175,48 @@ class NF_Utilities {
 			//if (is_user_logged_in()) echo '<style>.register { display: none; }</style>';
 	}
 	
-	private function subscribe($email) {
+	private function subscribe($email, $first, $last) {
 				
-		$list = '66e33db724';
+		$list = '88a3aedb5f';
 		
 		$result = $this->MailChimp->post("lists/$list/members", [
             'email_address' => $email,
             'status'        => 'subscribed',
+            'merge_fields'	=> [
+	            'FNAME'		=> $first,
+	            'LNAME'		=> $last,
+	            'PSTATUS'	=> 'Unpaid'
+            ]
         ]);
         
         if (isset($result['errors'])) return false;
         return true;
         
+	}
+	
+	public function update_subscriber() {
+		
+		$body = @file_get_contents('php://input');
+		
+		$event = json_decode($body);
+		
+		$email = $event->data->object->receipt_email;
+		
+		if ($email === null) exit;
+		
+		$hash = md5(strtolower($email));
+		
+		$list = '88a3aedb5f';
+		
+		$result = $this->MailChimp->patch("lists/$list/members/$hash", [
+            'merge_fields'	=> [
+	            'PSTATUS'	=> 'Paid'
+            ]
+        ]);
+        
+        var_dump($result);
+        
+        exit;
 	}
 	 
  }
