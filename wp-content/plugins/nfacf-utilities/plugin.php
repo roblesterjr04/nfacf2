@@ -11,6 +11,7 @@
  * Domain Path: languages
  */
 require_once('MailChimp.php');
+require_once('permits.php');
 require_once( __DIR__ . '/stripe-php/init.php');
 
 use \DrewM\MailChimp\MailChimp;

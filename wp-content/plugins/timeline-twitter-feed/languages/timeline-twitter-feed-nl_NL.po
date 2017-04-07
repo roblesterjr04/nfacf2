@@ -1,0 +1,458 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Timeline Twitter Feed\n"
+"POT-Creation-Date: 2014-11-18 16:33+0100\n"
+"PO-Revision-Date: 2014-11-18 16:37+0100\n"
+"Last-Translator: Ezra Verheijen\n"
+"Language-Team: \n"
+"Language: nl_NL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.7\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:52
+#, php-format
+msgid ""
+"<p class=\"description\">This area lets you configure your Twitter App and "
+"(if you want) reset your consumer key and secret. You can also <a href=\"%s"
+"\" target=\"_blank\">create a new application</a>. Fill out the application "
+"name, description and use %s as the website.</p>"
+msgstr ""
+"<p class=\"description\">Hieronder kun je de Twitter feed configureren en "
+"(als je wilt) de 'consumer key' en 'consumer secret' resetten. Je kunt ook "
+"<a href=\"%s\" target=\"_blank\">een nieuwe applicatie aanmaken</a>. Vul de "
+"naam van de toepassing en beschrijving in en gebruik %s als de website.</p>"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:57
+#, php-format
+msgid ""
+"<p class=\"description\">If you do not know how to find all this "
+"information, <a href=\"%s\" target=\"_blank\">this video</a> will help you. "
+"NOTE: you can use one app for multiple sites/domains.</p>"
+msgstr ""
+"<p class=\"description\">Als je niet weet hoe je al deze informatie kunt "
+"vinden, bekijk dan <a href=\"%s\" target=\"_blank\">deze video</a>. Let op: "
+"je kunt één app gebruiken voor meerdere sites/domeinen.</p>"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:64
+msgid "Basic Settings"
+msgstr "Basis instellingen"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:69
+msgid "Advanced Settings"
+msgstr "Geavanceerde instellingen"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:73
+msgid "Other Settings"
+msgstr "Overige instellingen"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:77
+msgid "Help"
+msgstr ""
+
+#: ../includes/class-timeline-twitter-feed-backend.php:90
+msgid "Consumer Key"
+msgstr ""
+
+#: ../includes/class-timeline-twitter-feed-backend.php:97
+msgid "Consumer Secret"
+msgstr ""
+
+#: ../includes/class-timeline-twitter-feed-backend.php:103
+msgid "Access Token"
+msgstr ""
+
+#: ../includes/class-timeline-twitter-feed-backend.php:109
+msgid "Access Token Secret"
+msgstr ""
+
+#: ../includes/class-timeline-twitter-feed-backend.php:115
+msgid "Twitter Username"
+msgstr "Twitter gebruikersnaam"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:116
+msgid "fill in your Twitter username without the @"
+msgstr "vul je Twitter gebruikersnaam in zonder de @"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:121
+msgid "Number of Tweets to show"
+msgstr "Aantal gebruikersnaam tweets"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:141
+msgid "Number of Hashtag Tweets to get in advance"
+msgstr "Aantal hashtag tweets vooraf ophalen"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:142
+msgid ""
+"Tweak this option to get more ore less `hashtag tweets` in advance. No need "
+"for this if you don't show tweets based on hashtags."
+msgstr ""
+"Stel deze optie af om meer of minder `hashtag tweets` vooraf op te halen. "
+"Dit is niet nodig als je geen tweets op basis van hashtag laat zien."
+
+#: ../includes/class-timeline-twitter-feed-backend.php:169
+msgid "Only show tweets from hashtags"
+msgstr "Alléén hashtag tweets"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:170
+msgid "enable this to disable showing tweets from (your) username(s)"
+msgstr "activeer dit om alleen tweets op basis van hashtags te tonen"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:175
+msgid "Enable Twitter JS"
+msgstr "Activeer Twitter JavaScript"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:176
+msgid ""
+"disable this if Twitter's JS call is already enabled elsewhere or if the "
+"follow button is not activated"
+msgstr ""
+"deactiveer dit wanneer de Twitter JavaScript ergens anders al wordt "
+"aangeroepen of wanneer de volg button niet is geactiveerd"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:181
+msgid "Show profile pictures"
+msgstr "Laat profiel afbeeldingen zien"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:187
+msgid "Use HTTPS for pictures"
+msgstr "Gebruik HTTPS voor afbeeldingen"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:193
+msgid "Append Twitter Button"
+msgstr "Activeer volg button"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:194
+msgid "inserts a Twitter follow button beneath the Twitter feed"
+msgstr "plaatst een Twitter volg button onder de feed"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:199
+msgid "Button Language"
+msgstr "Taal van de button"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:203
+msgid "English"
+msgstr "Engels"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:204
+msgid "Dutch"
+msgstr "Nederlands"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:209
+msgid "Large Twitter Button"
+msgstr "Grote volg button"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:215
+msgid "Show Follower Count"
+msgstr "Laat aantal volgers zien"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:216
+msgid "shows the number of followers by your @username for the follow button"
+msgstr "laat het aantal volgers van jouw account zien achter de follow button"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:221
+msgid "Link to @usernames"
+msgstr "Link naar @usernames"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:222
+msgid "inserts a link to any @username who is mentioned in a tweet"
+msgstr ""
+"maakt van iedere @gebruikersnaam in de tweet een link naar het account van "
+"de gebruiker"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:227
+msgid "Link to #hashtags"
+msgstr "Link naar #hashtags"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:228
+msgid "inserts a link to any #hashtag that is mentioned in a tweet"
+msgstr "maakt van iedere #hashtag in de tweet een link naar de hashtag"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:233
+msgid "Show Timestamp"
+msgstr "Laat een tijdstempel zien"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:234
+msgid ""
+"whether you want the tweet to append xx minutes/hours/days ago from the tweet"
+msgstr ""
+"laat onderaan de tweet een tijdstempel zien wanneer de tweet is gecreëerd"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:239
+msgid "Link to Tweet"
+msgstr "Link naar de tweet"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:240
+msgid "this will turn the timestamp into a a link to the tweet"
+msgstr "dit zorgt ervoor dat de tijdstempel een link wordt naar de tweet"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:245
+msgid "Use CSS file"
+msgstr "Gebruik CSS bestand"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:246
+msgid "disable this to use your own CSS file"
+msgstr "deactiveer dit om je eigen CSS bestand te gebruiken"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:251
+msgid "Show Username before Tweet"
+msgstr "Laat gebruikersnaam zien"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:252
+msgid "inserts @username: before each tweet, which links to that username"
+msgstr ""
+"plaatst @gebruikersnaam voor iedere tweet met een link naar het account van "
+"de gebruiker"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:257
+msgid "Error Message"
+msgstr "Foutmelding"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:258
+msgid "error message to show if the twitter feed can't show tweets"
+msgstr ""
+"foutmelding die moet worden getoond wanneer de feed geen tweets kan laten "
+"zien"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:265
+msgid "Fragment cache time"
+msgstr "Fragment cache duur"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:266
+msgid "caching time in seconds"
+msgstr "cache tijd in seconden"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:272
+msgid "Do AJAX updates?"
+msgstr "Activeer AJAX updates?"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:273
+msgid ""
+"Especially useful when using a static page caching plugin like W3 Total Cache"
+msgstr ""
+"Vooral handig wanneer je gebruikt maakt van een statische pagina caching "
+"plugin zoals W3 Total Cache"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:278
+msgid "Discard Tweets"
+msgstr "Blokkeer tweets"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:279
+msgid "discard tweets with the above comma-seperated words (lowercase)"
+msgstr ""
+"blokkeer tweets met de hierboven beschreven komma gescheiden woorden "
+"(kleingeschreven)"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:284
+msgid "Approve Tweets first"
+msgstr "Modereer tweets vooraf"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:285
+msgid ""
+"use this option if you are showing tweets from hashtags and want to moderate "
+"them first"
+msgstr ""
+"gebruik deze optie wanneer je tweets op basis van #hashtags laat zien en "
+"deze eerst wilt modereren"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:290
+msgid "Extra CSS"
+msgstr ""
+
+#: ../includes/class-timeline-twitter-feed-backend.php:291
+msgid ""
+"use the above field to add extra CSS rules (without the &lt;style&gt; tags)"
+msgstr ""
+"gebruik bovenstaand veld om eigen CSS regels in te voeren (zonder de &lt;"
+"style&gt; tags)"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:296
+msgid "Prefix for the timestamp"
+msgstr "Voorvoegsel voor de tijdstempel"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:302
+msgid "Seconds"
+msgstr "Seconden"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:308
+msgid "Minutes"
+msgstr "Minuten"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:314
+msgid "Hour"
+msgstr "Uur"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:320
+msgid "Hours"
+msgstr "Uren"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:326
+msgid "Day"
+msgstr "Dag"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:332
+msgid "Days"
+msgstr "Dagen"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:338
+msgid "Suffix for the timestamp"
+msgstr "Achtervoegsel voor de tijdstempel"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:376
+msgid ""
+"You need to enter your Twitter API settings for the Timeline Twitter Feed "
+"plugin to work."
+msgstr ""
+"Je moet eerst je Twitter gebruikersnaam en API-instellingen invoeren om de "
+"Timeline Twitter Feed plugin te laten werken."
+
+#: ../includes/class-timeline-twitter-feed-backend.php:379
+msgid "Configure"
+msgstr "Configureer"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:385
+msgid "Using the Shortcode"
+msgstr "De shortcode gebruiken"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:386
+msgid ""
+"You can insert a Twitter Feed manually in any page, post, template or "
+"widget. Here's an example of using the shortcode"
+msgstr ""
+"Je kunt een Twitter feed handmatig in iedere pagina, bericht, template of "
+"widget plaatsen. Hier is een voorbeeld voor het gebruiken van de shortcode"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:388
+msgid "You can also insert the shortcode directly into your theme with PHP"
+msgstr "Je kunt de shortcode ook rechtstreeks in je thema integreren met PHP"
+
+#: ../includes/class-timeline-twitter-feed-backend.php:390
+msgid ""
+"There's an extra option you can choose in the shortcode. You can either use "
+"the standard setting above or add tweets to the feed with certain hashtags "
+"in it."
+msgstr ""
+"Er is een extra optie beschikbaar voor de shortcode. Naast de standaard "
+"shortcode kun je ook tweets aan de feed toevoegen gebaseerd op specifieke "
+"hashtags."
+
+#: ../includes/class-timeline-twitter-feed-backend.php:391
+msgid "Here's an example of using the hashtag option"
+msgstr "Hier is een voorbeeld voor het gebruiken van de hashtag optie"
+
+#: ../includes/class-timeline-twitter-feed-dashboard-widget.php:15
+msgid "Approve #hashtag Tweets"
+msgstr "Modereer #hashtag tweets"
+
+#: ../includes/class-timeline-twitter-feed-dashboard-widget.php:123
+msgid "All tweets are approved"
+msgstr "Alle tweets zijn goedgekeurd"
+
+#: ../includes/class-timeline-twitter-feed-dashboard-widget.php:154
+msgid "Approve"
+msgstr "Goedkeuren"
+
+#: ../includes/class-timeline-twitter-feed-frontend.php:36
+msgid "...reloading..."
+msgstr "...herladen..."
+
+#: ../includes/class-timeline-twitter-feed-shortcode.php:285
+msgid ""
+"Twitter is unresponsive, user doesn't exist or Feed API and/or username "
+"settings are missing."
+msgstr ""
+"Twitter reageert niet, de gebruiker bestaat niet of de feed API instellingen "
+"en/of wachtwoord zijn niet ingevoerd."
+
+#: ../includes/class-timeline-twitter-feed-shortcode.php:288
+msgid "Click here"
+msgstr "Klik hier"
+
+#: ../includes/class-timeline-twitter-feed-shortcode.php:289
+msgid "to configure and read the instructions."
+msgstr "om de plugin te configureren en de instructies te lezen."
+
+#: ../includes/class-timeline-twitter-feed-shortcode.php:294
+msgid "Unable to show tweets right now..."
+msgstr "Er kunnen momenteel geen tweets worden getoond..."
+
+#: ../includes/class-timeline-twitter-feed-widget.php:8
+msgid "Timeline Twitter Feed"
+msgstr ""
+
+#: ../includes/class-timeline-twitter-feed-widget.php:9
+msgid "Widget for the Timeline Twitter Feed"
+msgstr "Widget voor de Timeline Twitter Feed"
+
+#: ../includes/class-timeline-twitter-feed-widget.php:49
+msgid "Title:"
+msgstr ""
+
+#: ../includes/class-timeline-twitter-feed-widget.php:53
+msgid "Hashtags:"
+msgstr ""
+
+#: ../includes/class-timeline-twitter-feed-widget.php:58
+msgid "Seperate multiple hashtags with commas"
+msgstr "Separeer meerdere hashtags met komma's"
+
+#: ../includes/class-timeline-twitter-feed-widget.php:59
+msgid "For example"
+msgstr "Bijvoorbeeld"
+
+#: ../lib/class-twitterwp.php:177
+msgid "ERROR: You need to provide a user."
+msgstr ""
+
+#: ../lib/class-twitterwp.php:269
+msgid "ERROR: Could not retrieve bearer token."
+msgstr ""
+
+#: ../lib/class-twitterwp.php:544
+msgid "ERROR: Missing Twitter App credentials."
+msgstr ""
+
+#: ../timeline-twitter-feed.php:134
+msgid "Settings"
+msgstr ""
+
+#~ msgid "Here are some examples for the hashtags"
+#~ msgstr "Hier is een voorbeeld voor het gebruiken van de hashtag optie"
+
+#~ msgid ""
+#~ "You can use just about any term you want and decide how many terms you "
+#~ "want to use. Make sure every term starts with \"#\" and seperate the "
+#~ "terms with \"OR\"."
+#~ msgstr ""
+#~ "Je kunt iedere term gebruiken die je wilt en zelf bepalen hoeveel je er "
+#~ "wilt gebruiken. Zorg ervoor dat iedere term begint met \"#\" en dat de "
+#~ "termen worden gescheiden door \"OR\"."
+
+#~ msgid "(about"
+#~ msgstr "(ongeveer"
+
+#~ msgid "seconds"
+#~ msgstr "seconden"
+
+#~ msgid "minutes"
+#~ msgstr "minuten"
+
+#~ msgid "hour"
+#~ msgstr "uur"
+
+#~ msgid "hours"
+#~ msgstr "uren"
+
+#~ msgid "day"
+#~ msgstr "dag"
+
+#~ msgid "days"
+#~ msgstr "dagen"
+
+#~ msgid "ago)"
+#~ msgstr "geleden)"

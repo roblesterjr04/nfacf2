@@ -1,0 +1,58 @@
+.timeline-twitter-feed {
+	margin-bottom: 10px;
+	padding: 10px;
+	clear: both;
+}
+
+.timeline-twitter-feed .ttf-tweet {
+	padding: 10px;
+	position: relative;
+	clear: both;
+}
+
+.ttf-tweet-image {
+	float: left;
+    margin-right: 10px;
+    margin-top: 3px;
+    overflow: hidden;
+}
+
+.ttf-tweet-image img {
+	border-radius: 5px;
+}
+
+.ttf-tweet-image > a img {
+	border: 0 none;
+}
+
+.ttf-tweet-content {
+	margin-left: 58px;
+	min-height: 48px;
+}
+
+.ttf-tweet-row {
+	display: block;
+	position: relative;
+	margin-bottom: 3%;
+}
+
+a.ttf-tweet-screen-name {
+	font-weight: bold;
+}
+
+.ttf-tweet-full-name {
+	color: #999;
+}
+
+.ttf-tweet-text {
+	padding: 0;
+	word-wrap: break-word;
+}
+
+.ttf-timestamp {
+	font-size: 0.9em;
+}
+
+p.ttf-red {
+	color: red;
+}
