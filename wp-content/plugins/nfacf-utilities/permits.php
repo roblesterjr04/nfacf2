@@ -47,15 +47,17 @@ class NF_Permits {
 		$address = implode(" ", $address);
 		$address = preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', $address);
 		
+		$name = ucwords(strtolower($user->display_name));
+		
 		imagettftext($image, $size, 0, 420, 160, $black, $font, 'North Fullerton Arts & Crafts Fair 2017');
 		imagettftext($image, $size, 0, 940, 320, $black, $font, $this->date);
-		imagettftext($image, $size, 0, 300, 590, $black, $font, $user->display_name);
+		imagettftext($image, $size, 0, 300, 590, $black, $font, $name);
 		imagettftext($image, $size, 0, 300, 645, $black, $font, get_user_meta( $user->ID, 'phone_number', true ));
 		imagettftext($image, $size, 0, 820, 645, $black, $font, '2');
 		imagettftext($image, $size, 0, 300, 690, $black, $font, $address);
 		imagettftext($image, $size, 0, 580, 740, $black, $font, get_user_meta( $user->ID, 'type_of_goods', true ));
 		
-		imagettftext($image, 45, 0, 170, 1220, $gray, $signature2, preg_replace("/[^A-Za-z0-9 ]/", ' ', $user->display_name));
+		imagettftext($image, 45, 0, 170, 1220, $gray, $signature2, preg_replace("/[^A-Za-z0-9 ]/", ' ', $name));
 		imagettftext($image, 45, 1, 170, 1330, $gray, $signature, 'Dr Leslie Ann Lester');
 		imagettftext($image, 25, 0, 840, 1320, $gray, $font, date('j M Y'));
 		
