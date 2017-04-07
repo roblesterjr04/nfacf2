@@ -7,6 +7,15 @@ class NF_Permits {
 	public function __construct() {
 		
 		add_action('wp_ajax_assemble_permits', array($this, 'gather_permits'));
+		add_filter('user_row_actions', array($this, 'permit_link'), 10, 2);
+		
+	}
+	
+	public function permit_link($actions, $user_object) {
+		
+		$actions['print_permit'] = '<a href="'.admin_url('admin-ajax.php?action=assemble_permits&user=').$user_object->ID.'" target="_blank">Permit</a>';
+		
+		return $actions;
 		
 	}
 	
