@@ -213,7 +213,7 @@ class NF_Utilities {
 		$email = $event->data->object->receipt_email;
 		
 		$user = get_user_by_email($email);
-		update_user_meta($user->ID, 'attending', date('Y'));
+		update_user_meta($user->ID, 'attending', 'not');
 		
 		if ($email === null) exit;
 		
