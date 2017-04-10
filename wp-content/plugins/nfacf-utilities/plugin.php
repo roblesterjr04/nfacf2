@@ -13,7 +13,7 @@
 require_once('MailChimp.php');
 require_once('permits.php');
 require_once( __DIR__ . '/stripe-php/init.php');
-
+require_once( __DIR__ . '/pdf/tcpdf.php');
 use \DrewM\MailChimp\MailChimp;
  
 class NF_Utilities {
@@ -37,6 +37,7 @@ class NF_Utilities {
 		add_filter('wp_nav_menu_objects', array($this, 'menu_login'), 10, 2);
 		
 		add_action('wp_ajax_nopriv_arts_fair_charge', array($this, 'update_subscriber'));
+		add_action('wp_ajax_nopriv_arts_fair_refund', array($this, 'update_refund'));
 		
 		$this->MailChimp = new MailChimp('98f888ec715f151b8a63d086f441c8bf-us13');
 	 
@@ -80,6 +81,13 @@ class NF_Utilities {
 		$email = $user_obj->email;
 		
 		if ($existing_permit && $permit_approved) $amount -= 25;
+		
+		$userid = get_current_user_id();
+		$paid = get_user_meta($userid, 'attending', true);
+		
+		if ($paid == date('Y')) {
+			return '<h4>You have paid $'.money_format('%i', $amount).' for the '.date('Y').' event.</h4>';
+		}
 		
 		$code = '<h4>Your price will be $'.money_format('%i', $amount).'</h4>[accept_stripe_payment email="'.$email.'" name="Fair Registration" price="'.$amount.'" item_logo="'.$logo.'"]';
 		
@@ -186,13 +194,44 @@ class NF_Utilities {
             'merge_fields'	=> [
 	            'FNAME'		=> $first,
 	            'LNAME'		=> $last,
-	            'PSTATUS'	=> 'Unpaid'
+	            'PSTATUS'	=> 'Unpaid',
+	            'ATTEND'	=> 'Not'
             ]
         ]);
         
         if (isset($result['errors'])) return false;
         return true;
         
+	}
+	
+	public function update_refund() {
+		
+		$body = @file_get_contents('php://input');
+		
+		$event = json_decode($body);
+		
+		$email = $event->data->object->receipt_email;
+		
+		$user = get_user_by_email($email);
+		update_user_meta($user->ID, 'attending', date('Y'));
+		
+		if ($email === null) exit;
+		
+		$hash = md5(strtolower($email));
+		
+		$list = '88a3aedb5f';
+		
+		$result = $this->MailChimp->patch("lists/$list/members/$hash", [
+            'merge_fields'	=> [
+	            'PSTATUS'	=> 'Unpaid',
+	            'ATTEND'	=> 'Not'
+            ]
+        ]);
+        
+        var_dump($result);
+        
+        exit;
+		
 	}
 	
 	public function update_subscriber() {
@@ -203,6 +242,9 @@ class NF_Utilities {
 		
 		$email = $event->data->object->receipt_email;
 		
+		$user = get_user_by_email($email);
+		update_user_meta($user->ID, 'attending', date('Y'));
+		
 		if ($email === null) exit;
 		
 		$hash = md5(strtolower($email));
@@ -211,7 +253,8 @@ class NF_Utilities {
 		
 		$result = $this->MailChimp->patch("lists/$list/members/$hash", [
             'merge_fields'	=> [
-	            'PSTATUS'	=> 'Paid'
+	            'PSTATUS'	=> 'Paid',
+	            'ATTEND'	=> date('Y')
             ]
         ]);
         
