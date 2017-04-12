@@ -83,8 +83,10 @@ class NF_Permits {
 		$address = explode("\n", get_user_meta( $user->ID, 'mailing_address', true ));
 		$address = implode(" ", $address);
 		$address = preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', $address);
+		$address = str_replace('<br />', '', $address);
 		
 		$references = get_user_meta( $user->ID, 'personal_references', true );
+		$references = str_replace('<br />', '', $references);
 		
 		$type = get_user_meta( $user->ID, 'vendor_type', true );
 		
@@ -112,7 +114,7 @@ class NF_Permits {
 		imagettftext($image, $size, 0, 830, 730, $black, $font, get_user_meta( $user->ID, 'number_of_trucks', true ) ?: 0);
 		
 		if (!isset($_GET['nosig'])) imagettftext($image, 47, 0, 50, 1155, $gray, $signature2, preg_replace("/[^A-Za-z0-9 ]/", ' ', $name));
-		imagettftext($image, 45, 1, 50, 1265, $gray, $signature, 'Dr Leslie Ann Lester');
+		imagettftext($image, 45, 1, 50, 1265, $gray, $signature3, 'Dr Leslie A Lester');
 		imagettftext($image, 25, 0, 690, 1255, $gray, $font, date('j M Y'));
 				
 		ob_start();
