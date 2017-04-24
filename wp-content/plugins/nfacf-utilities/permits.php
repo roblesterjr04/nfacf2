@@ -68,7 +68,7 @@ class NF_Permits {
 	
 	private function permit($user) {
 		
-		$permit_image = plugin_dir_path( __FILE__ ) . 'Permit.pages.png';
+		$permit_image = plugin_dir_path( __FILE__ ) . 'permit.png';
 		
 		$image = imagecreatefrompng($permit_image);
 		$black = imagecolorallocate($image, 0, 0, 0);
@@ -94,28 +94,30 @@ class NF_Permits {
 		$crime = get_user_meta( $user->ID, 'committed_crime', true ) ?: 'No';
 		$self = get_user_meta( $user->ID, 'self_employed', true ) ?: 'Yes';
 		$thecrime = get_user_meta( $user->ID, 'the_crime', true );
-		if ($crime == 'Yes') imagettftext($image, $size, 0, 700, 1030, $black, $font, 'X');
-		else imagettftext($image, $size, 0, 830, 1030, $black, $font, 'X');
-		if ($self == 'Yes') imagettftext($image, $size, 0, 250, 730, $black, $font, 'X');
-		else imagettftext($image, $size, 0, 335, 730, $black, $font, 'X');
+		if ($crime == 'Yes') imagettftext($image, $size, 0, 680, 1055, $black, $font, 'X');
+		else imagettftext($image, $size, 0, 810, 1055, $black, $font, 'X');
+		if ($self == 'Yes') imagettftext($image, $size, 0, 250, 720, $black, $font, 'X');
+		else imagettftext($image, $size, 0, 335, 720, $black, $font, 'X');
+		
+		imagettftext($image, $size, 0, 380, 770, $black, $font, get_user_meta( $user->ID, 'company_name', true) ?: 'NA/Self-Employed');
 		
 		if ($thecrime) imagettftext($image, $size, 0, 460, 1055, $black, $font, $thecrime);
 		
 		imagettftext($image, $size, 0, 320, 100, $black, $font, $this->event);
 		imagettftext($image, $size, 0, 800, 250, $black, $font, $this->date);
 		imagettftext($image, $size, 0, 160, 530, $black, $font, $name);
-		imagettftext($image, $size, 0, 160, 580, $black, $font, get_user_meta( $user->ID, 'phone_number', true ));
+		imagettftext($image, $size, 0, 170, 580, $black, $font, get_user_meta( $user->ID, 'phone_number', true ));
 		imagettftext($image, $size, 0, 720, 580, $black, $font, '2');
-		imagettftext($image, $size, 0, 160, 625, $black, $font, $address);
-		imagettftext($image, $size, 0, 120, 805, $black, $font, $references);
-		imagettftext($image, $size, 0, 120, 930, $black, $font, $address);
+		imagettftext($image, $size, 0, 180, 625, $black, $font, $address);
+		imagettftext($image, $size, 0, 120, 840, $black, $font, $references ?: 'Nothing Saved');
+		imagettftext($image, $size, 0, 120, 960, $black, $font, $address);
 		imagettftext($image, $size, 0, 440, 675, $black, $font, get_user_meta( $user->ID, 'type_of_goods', true ));
 		
-		imagettftext($image, $size, 0, 830, 730, $black, $font, get_user_meta( $user->ID, 'number_of_trucks', true ) ?: 0);
+		imagettftext($image, $size, 0, 830, 720, $black, $font, get_user_meta( $user->ID, 'number_of_trucks', true ) ?: 0);
 		
-		if (!isset($_GET['nosig'])) imagettftext($image, 47, 0, 50, 1155, $gray, $signature2, preg_replace("/[^A-Za-z0-9 ]/", ' ', $name));
+		if (!isset($_GET['nosig'])) imagettftext($image, 47, 0, 50, 1175, $gray, $signature2, preg_replace("/[^A-Za-z0-9 ]/", ' ', $name));
 		imagettftext($image, 45, 1, 50, 1265, $gray, $signature3, 'Dr Leslie A Lester');
-		imagettftext($image, 25, 0, 690, 1255, $gray, $font, date('j M Y'));
+		imagettftext($image, 25, 0, 690, 1275, $gray, $font, date('j M Y'));
 				
 		ob_start();
 		imagejpeg($image);
