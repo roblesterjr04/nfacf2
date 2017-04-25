@@ -106,10 +106,10 @@ class NF_Permits {
 		imagettftext($image, $size, 0, 320, 100, $black, $font, $this->event);
 		imagettftext($image, $size, 0, 800, 250, $black, $font, $this->date);
 		imagettftext($image, $size, 0, 160, 530, $black, $font, $name);
-		imagettftext($image, $size, 0, 170, 580, $black, $font, get_user_meta( $user->ID, 'phone_number', true ));
-		imagettftext($image, $size, 0, 720, 580, $black, $font, '2');
+		imagettftext($image, $size, 0, 170, 576, $black, $font, get_user_meta( $user->ID, 'phone_number', true ));
+		imagettftext($image, $size, 0, 720, 576, $black, $font, '2');
 		imagettftext($image, $size, 0, 180, 625, $black, $font, $address);
-		imagettftext($image, $size, 0, 120, 840, $black, $font, $references ?: 'Nothing Saved');
+		imagettftext($image, $size, 0, 120, 840, $black, $font, $references);
 		imagettftext($image, $size, 0, 120, 960, $black, $font, $address);
 		imagettftext($image, $size, 0, 440, 675, $black, $font, get_user_meta( $user->ID, 'type_of_goods', true ));
 		
