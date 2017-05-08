@@ -22,6 +22,8 @@ class NF_Utilities {
 	private $vendor_amount = 115;
 	private $food_amount = 150;
 	private $non_profit_amount = 65;
+	
+	private $event_date = '05/06/2017';
 	 
 	public function __construct() {
 	 
@@ -85,8 +87,12 @@ class NF_Utilities {
 		$userid = get_current_user_id();
 		$paid = get_user_meta($userid, 'attending', true);
 		
-		if ($paid == date('Y')) {
-			return '<h4>You have paid $'.money_format('%i', $amount).' for the '.date('Y').' event.</h4>';
+		if (time() > strtotime($this->event_date)) {
+			return '<h4>The '.date('Y', strtotime($this->event_date)).' was a success! Spot reservations/payments for the '.(date('Y', strtotime($this->event_date)) + 1).' event will be open once the date is announced. Thank you!</h4>';
+		}
+		
+		if ($paid == date('Y', strtotime($this->event_date))) {
+			return '<h4>You have paid $'.money_format('%i', $amount).' for the '.date('Y', strtotime($this->event_date)).' event.</h4>';
 		}
 		
 		$code = '<h4>Your price will be $'.money_format('%i', $amount).'</h4>[accept_stripe_payment email="'.$email.'" name="Fair Registration" price="'.$amount.'" item_logo="'.$logo.'"]';
